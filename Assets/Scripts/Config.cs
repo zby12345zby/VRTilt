@@ -48,6 +48,9 @@ namespace TiltBrush
         Monoscopic,
         Ods,
         Gvr,
+
+        //zby加的
+        ShadowMR
     }
 
     // These names are used in our analytics, so they must be protected from obfuscation.
@@ -64,6 +67,9 @@ namespace TiltBrush
         Daydream,
         Wmr,
         Quest,
+
+        //zby加的
+        MRHelmet
     }
 
     /// These are not used in analytics. They indicate the type of tool tip description that will appear
@@ -190,6 +196,17 @@ namespace TiltBrush
                     else if (m_SdkMode == SdkMode.Gvr)
                     {
                         m_VrHardware = TiltBrush.VrHardware.Daydream;
+                    }
+                    
+                    //zby加的
+                    else if (m_SdkMode==SdkMode.ShadowMR)
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            Debug.Log("现在是MR平台");
+                        }
+
+                        m_VrHardware = VrHardware.MRHelmet;
                     }
                     else
                     {
@@ -787,7 +804,8 @@ namespace TiltBrush
             }
             bool useVrSdk = m_SdkMode == SdkMode.Oculus
                          || m_SdkMode == SdkMode.SteamVR
-                         || m_SdkMode == SdkMode.Gvr;
+                         || m_SdkMode == SdkMode.Gvr
+                         || m_SdkMode==SdkMode.ShadowMR;
 
             // Writing to this sets the scene-dirty flag, so don't do it unless necessary
             if (UnityEditor.PlayerSettings.virtualRealitySupported != useVrSdk)
@@ -813,6 +831,14 @@ namespace TiltBrush
                     newDevices = new string[] { "OpenVR" };
                     buildTargetGroups.Add(UnityEditor.BuildTargetGroup.Standalone);
                     break;
+
+                    //zby加的
+                case SdkMode.ShadowMR:
+                    newDevices = new string[] { "OpenVR" };
+                    buildTargetGroups.Add(UnityEditor.BuildTargetGroup.Standalone);
+                    break;
+                    //
+
                 default:
                     newDevices = new string[] { "" };
                     break;

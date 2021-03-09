@@ -350,7 +350,7 @@ namespace TiltBrush
         // API for subclass
 
 
-        /// Returns the ratio of how much the trigger is being pulled.
+        /// Returns the ratio of how much the trigger is being pulled. ///返回触发次数的比率。
         public abstract float GetTriggerRatio();
 
         // Not filtered

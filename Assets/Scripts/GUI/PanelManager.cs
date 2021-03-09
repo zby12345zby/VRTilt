@@ -36,6 +36,10 @@ namespace TiltBrush
         {
             switch (mode)
             {
+                //zby加的
+                case SdkMode.ShadowMR:
+                    return m_ModeVr;
+
                 case SdkMode.SteamVR:
                 case SdkMode.Oculus:
 #if (UNITY_EDITOR || EXPERIMENTAL_ENABLED)
@@ -1701,58 +1705,58 @@ namespace TiltBrush
 
         public void LockPanelsToController()
         {
-            Transform rBaseTransform = InputManager.Wand.Geometry.MainAxisAttachPoint;
+            //Transform rBaseTransform = InputManager.Wand.Geometry.MainAxisAttachPoint;
 
-            float fStep = m_WandPanelsRotationVelocity * Time.deltaTime;
-            if (Mathf.Abs(fStep) > 0.0001f)
-            {
-                m_WandPanelsRotationVelocity *= Mathf.Max(1.0f - (m_WandPanelsRotationDecay * Time.deltaTime), 0.0f);
-                UpdateWandPanelsOriginAngle(fStep);
-            }
-            else
-            {
-                m_WandPanelsRotationVelocity = 0.0f;
-            }
+            //float fStep = m_WandPanelsRotationVelocity * Time.deltaTime;
+            //if (Mathf.Abs(fStep) > 0.0001f)
+            //{
+            //    m_WandPanelsRotationVelocity *= Mathf.Max(1.0f - (m_WandPanelsRotationDecay * Time.deltaTime), 0.0f);
+            //    UpdateWandPanelsOriginAngle(fStep);
+            //}
+            //else
+            //{
+            //    m_WandPanelsRotationVelocity = 0.0f;
+            //}
 
-            foreach (PanelData p in GetFixedPanels())
-            {
-                SetPanelXfFromWand(p.m_Panel, rBaseTransform, m_WandPanelsOriginAngle,
-                    m_WandPanelsOriginAngleOffset, m_WandRadius);
-            }
+            //foreach (PanelData p in GetFixedPanels())
+            //{
+            //    SetPanelXfFromWand(p.m_Panel, rBaseTransform, m_WandPanelsOriginAngle,
+            //        m_WandPanelsOriginAngleOffset, m_WandRadius);
+            //}
 
-            // Keep alt panels locked in place if we're not in standard mode.
-            // No point in paying for them if we're not using them.
-            if (m_PanelsMode != PanelMode.Standard)
-            {
-                for (int i = 0; i < m_SketchbookPanels.Count; ++i)
-                {
-                    SetAltPanelXfFromWand(m_SketchbookPanels[i], rBaseTransform);
-                }
+            //// Keep alt panels locked in place if we're not in standard mode.
+            //// No point in paying for them if we're not using them.
+            //if (m_PanelsMode != PanelMode.Standard)
+            //{
+            //    for (int i = 0; i < m_SketchbookPanels.Count; ++i)
+            //    {
+            //        SetAltPanelXfFromWand(m_SketchbookPanels[i], rBaseTransform);
+            //    }
 
-                for (int i = 0; i < m_SettingsPanels.Count; ++i)
-                {
-                    SetAltPanelXfFromWand(m_SettingsPanels[i], rBaseTransform);
-                }
+            //    for (int i = 0; i < m_SettingsPanels.Count; ++i)
+            //    {
+            //        SetAltPanelXfFromWand(m_SettingsPanels[i], rBaseTransform);
+            //    }
 
-                for (int i = 0; i < m_MemoryWarningPanels.Count; ++i)
-                {
-                    SetAltPanelXfFromWand(m_MemoryWarningPanels[i], rBaseTransform);
-                }
+            //    for (int i = 0; i < m_MemoryWarningPanels.Count; ++i)
+            //    {
+            //        SetAltPanelXfFromWand(m_MemoryWarningPanels[i], rBaseTransform);
+            //    }
 
-                for (int i = 0; i < m_CameraPanels.Count; ++i)
-                {
-                    SetAltPanelXfFromWand(m_CameraPanels[i], rBaseTransform);
-                }
+            //    for (int i = 0; i < m_CameraPanels.Count; ++i)
+            //    {
+            //        SetAltPanelXfFromWand(m_CameraPanels[i], rBaseTransform);
+            //    }
 
-                for (int i = 0; i < m_BrushLabPanels.Count; ++i)
-                {
-                    SetAltPanelXfFromWand(m_BrushLabPanels[i], rBaseTransform);
-                }
-            }
+            //    for (int i = 0; i < m_BrushLabPanels.Count; ++i)
+            //    {
+            //        SetAltPanelXfFromWand(m_BrushLabPanels[i], rBaseTransform);
+            //    }
+            //}
 
-            // Keep admin panel locked.
-            SetPanelXfFromWand(m_AdminPanel, rBaseTransform, 0.0f, 0.0f,
-                m_AdminPanelWandRadius, true);
+            //// Keep admin panel locked.
+            //SetPanelXfFromWand(m_AdminPanel, rBaseTransform, 0.0f, 0.0f,
+            //    m_AdminPanelWandRadius, true);
         }
 
         public void SetPanelXfFromWand(BasePanel panel, Transform wandTransform,

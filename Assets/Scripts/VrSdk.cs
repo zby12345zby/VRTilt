@@ -43,6 +43,10 @@ namespace TiltBrush
         Gvr,
         LogitechPen,
         Cosmos,
+
+
+        //zby加的
+        ShadowMRHelmet
     }
 
     //
@@ -87,6 +91,10 @@ namespace TiltBrush
         [SerializeField] private GameObject m_OculusQuestControlsPrefab;
         [SerializeField] private GameObject m_GvrPointerControlsPrefab;
         [SerializeField] private GameObject m_NonVrControlsPrefab;
+
+        //用于Shadow MR设备（zby加的）
+        [SerializeField] private GameObject m_ShadowMrControlsPrefab;
+
 
         // This is the object "Camera (eye)"
         /// <summary>
@@ -280,6 +288,15 @@ namespace TiltBrush
                 // Offset for head position, since camera height is set by the VR system.
                 m_VrCamera.transform.localPosition = new Vector3(0f, 1.5f, 0f);
             }
+
+
+            //zby加的
+            else if (App.Config.m_SdkMode == SdkMode.ShadowMR)
+            {
+                SetControllerStyle(TiltBrush.ControllerStyle.ShadowMRHelmet);
+            }
+            //
+
             else
             {
                 // ---------------------------------------------------------------------------------------- //
@@ -599,9 +616,13 @@ namespace TiltBrush
         // TODO: this will always give the wand left-hand geometry and the brush right-hand geometry,
         // so InputManager.WandOnRight should probably be reset to false after this? Or maybe
         // SetControllerStyle should be smart enough to figure that out.
+        //销毁并重新创建ControllerBehavior和ControllerGeometry对象。
+        //如果需要不同的几何图形，这非常有用。
+        //TODO:这将始终为魔杖提供左手几何图形，为画笔提供右手几何图形，因此InputManager.WandOnRight输入管理器在这之后应该重置为false吗？
+        //或者SetControllerStyle应该足够聪明来解决这个问题。
         public void SetControllerStyle(ControllerStyle style)
         {
-            // Clear console parent in case we're switching controllers.
+            // Clear console parent in case we're switching controllers. //清除控制台父项以防我们切换控制器。
             if (ControllerConsoleScript.m_Instance != null)
             {
                 ControllerConsoleScript.m_Instance.transform.parent = null;
@@ -629,6 +650,13 @@ namespace TiltBrush
             GameObject controlsPrefab;
             switch (style)
             {
+
+                //zby加的
+                case ControllerStyle.ShadowMRHelmet:
+                    controlsPrefab = m_ShadowMrControlsPrefab;
+                    break;
+                    //
+
                 case ControllerStyle.Vive:
                     controlsPrefab = m_SteamViveControlsPrefab;
                     break;
@@ -753,6 +781,14 @@ namespace TiltBrush
             {
                 return new GvrControllerInfo(behavior, isLeftHand);
             }
+
+            //zby加的
+            else if (App.Config.m_SdkMode == SdkMode.ShadowMR)
+            {
+                return new MRControllerInfo(behavior);
+            }
+            //
+
             else
             {
                 return new NonVrControllerInfo(behavior);
@@ -764,6 +800,9 @@ namespace TiltBrush
         // we wouldn't have to do any swapping. So rather than putting Behaviour_Pose on the Behavior,
         // we should dynamically add it when creating the Geometry. This might make the Behavior
         // prefabs VRAPI-agnostic, too.
+        //交换每个ControllerInfo关联的手
+        //TODO:如果跟踪与几何体相关联，而不是与Info+行为相关联，我们就不必进行任何交换。
+        //因此，在创建几何体时，我们应该动态添加行为，而不是将行为放在行为上。这也可能使行为预制VRAPI不可知。
         public bool TrySwapLeftRightTracking()
         {
             bool leftRightSwapped = true;
@@ -811,6 +850,13 @@ namespace TiltBrush
                 InputManager.Controllers[0] = InputManager.Controllers[1];
                 InputManager.Controllers[1] = tmp;
             }
+
+            //zby加的
+            else if(App.Config.m_SdkMode == SdkMode.ShadowMR)
+            {
+
+            }
+            //
 
             return leftRightSwapped;
         }
@@ -1085,6 +1131,12 @@ namespace TiltBrush
                 case SdkMode.Ods:
                     // TODO: 30 would be correct, buf feels too slow.
                     return 60;
+
+                //zby加的
+                case SdkMode.ShadowMR:
+                    return 60;
+                    //
+
                 default:
                     throw new NotImplementedException("Unknown VR SDK Mode");
             }

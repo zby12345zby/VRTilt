@@ -198,7 +198,7 @@ namespace TiltBrush
             // different from the inputValid param.  inputValid takes game state in to account,
             // including eatInput flags.
             //如果没有控制器输入，请重置活动输入对象。请注意，这与inputValid参数不同。inputValid考虑游戏状态，包括输入标志。
-            if (!InputManager.m_Instance.GetCommand(InputManager.SketchCommands.Activate))
+            if (!InputManager.m_Instance.GetCommand(InputManager.SketchCommands.Activate))//Activate
             {
                 ResetInput();
             }

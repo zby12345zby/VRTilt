@@ -1294,12 +1294,14 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
         public void UpdatePanel(Vector3 vToPanel, Vector3 vHitPoint)
         {
             // Validate input and cache it for this update. //验证输入并为此更新缓存它。
-            m_InputValid = InputManager.m_Instance.GetCommand(InputManager.SketchCommands.Activate);
+            m_InputValid = InputManager.m_Instance.GetCommand(InputManager.SketchCommands.Activate); //Activate
             if (m_EatInput)
             {
                 m_EatInput = m_InputValid;
                 m_InputValid = false;
             }
+
+            
 
             // Cache input ray for this update. //缓存此更新的输入光线。
             Vector3 vReticlePos = SketchControlsScript.m_Instance.GetUIReticlePos();

@@ -3194,6 +3194,9 @@ namespace TiltBrush
             UnityEngine.Profiling.Profiler.EndSample();
         }
 
+        /// <summary>
+        /// 更新活动面板定位
+        /// </summary>
         void UpdateActiveGazeObject()
         {
             BasePanel currentPanel = m_PanelManager.GetPanel(m_CurrentGazeObject);
@@ -3234,9 +3237,11 @@ namespace TiltBrush
                 // It's possible that, on this frame, before this function was called, active gaze was pulled
                 // from this panel.  In this case, we want to skip updating this frame.
                 // This happens when a panel has gaze and world grab dismisses all panels, for example.
+                //有可能，在调用这个函数之前，在这个框架上，主动的凝视被从这个面板中拉出来。在这种情况下，我们希望跳过更新此帧。
+                //例如，当一个面板有凝视，而world grab取消了所有面板时，就会发生这种情况。
                 if (currentPanel.IsActive())
                 {
-                    //orient to gaze
+                    //orient to gaze //面向凝视
                     if (hasController)
                     {
                         currentPanel.UpdatePanel(m_GazeControllerRay.direction, m_CurrentGazeHitPoint);
@@ -3249,7 +3254,7 @@ namespace TiltBrush
 
                 if (!hasController)
                 {
-                    //lock to head if we're holding a lock button..
+                    //lock to head if we're holding a lock button.. //如果我们拿着锁钮，就要锁上头。。
                     bool bLockToHead = InputManager.m_Instance.GetCommand(InputManager.SketchCommands.LockToHead) ||
                         InputManager.m_Instance.GetCommand(InputManager.SketchCommands.LockToController);
 

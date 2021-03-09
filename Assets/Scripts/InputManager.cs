@@ -700,6 +700,7 @@ namespace TiltBrush
             {
                 case SketchCommands.Activate:
                     return Brush.GetCommand(rCommand) || (!isDemoMode && GetMouseButton(0));
+                    
                 case SketchCommands.AltActivate:
                     return GetMouseButton(1) || Wand.GetCommand(rCommand);
                 case SketchCommands.LockToHead:

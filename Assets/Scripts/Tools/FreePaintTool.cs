@@ -116,7 +116,7 @@ namespace TiltBrush
 
         void PositionPointer()
         {
-            // Angle the pointer according to the user-defined pointer angle.
+            // Angle the pointer according to the user-defined pointer angle. //根据用户定义的指针角度调整指针的角度。
             Transform rAttachPoint = InputManager.m_Instance.GetBrushControllerAttachPoint();
             Vector3 pos = rAttachPoint.position;
             Quaternion rot = rAttachPoint.rotation * sm_OrientationAdjust;
