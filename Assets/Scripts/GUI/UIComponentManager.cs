@@ -34,6 +34,8 @@ namespace TiltBrush
         // that are managed directly by panels and popups.  The ideal scenario is that everything is
         // managed by a UIComponentManager and the set method does not exist.
         // TODO
+        //这是一个用于理想未来用途的访问器。目前，我们拥有从UIComponent派生并由UIComponentManager管理的部分UI。
+        //我们还有由面板和弹出窗口直接管理的部分。理想的情况是，所有内容都由UIComponentManager管理，并且set方法不存在。
         public GameObject ActiveInputObject
         {
             get { return m_ActiveInputObject; }
@@ -220,6 +222,8 @@ namespace TiltBrush
 
             // If we clicked, but didn't hit a UIComponent, set our active object to ourself.
             // This will prevent "off-clicking and dragging" to initiate a press.
+            //如果我们点击了，但是没有点击UIComponent，那么将我们的活动对象设置为我们自己。
+            //这将防止“关闭点击和拖动”启动按下。
             if (inputValid && m_ActiveInputObject == null)
             {
                 m_ActiveInputObject = gameObject;
@@ -277,6 +281,7 @@ namespace TiltBrush
             {
                 // There's an order of operations issue here.  In practice, UIComponents don't have
                 // overlapping colliders, so it shouldn't matter.
+                //这里有一个操作顺序问题。实际上，UIComponents没有重叠的对撞机，所以这不重要。
                 if (m_UIComponents[i].RaycastAgainstCustomCollider(ray, out hitInfo, dist))
                 {
                     return true;

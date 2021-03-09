@@ -27,6 +27,9 @@ namespace TiltBrush
     // Ordering:
     // - Viewpoint must come before InputManager (InputManager uses Viewpoint)
     // - InputManager must come before scripts that use it, specifically SketchControls
+    //订购：
+    //-Viewpoint必须在InputManager之前（InputManager使用Viewpoint）
+    //-InputManager必须放在使用它的脚本之前，特别是SketchControls
     public class InputManager : MonoBehaviour
     {
         const string PLAYER_PREF_WAND_ON_RIGHT = "WandOnRight";
@@ -55,6 +58,8 @@ namespace TiltBrush
         /// WARNING: do not arbitrarily rename these enum values.
         /// There is magic in MapCommandToKeyboard that relies on SketchCommand values having
         /// the same names as KeyboardShortcut values.
+        /// 警告：不要随意重命名这些枚举值。
+        /// MapCommandToKeyboard中有一种魔力，它依赖于与键盘快捷方式值同名的SketchCommand值。
         public enum SketchCommands
         {
             Activate,
@@ -97,6 +102,8 @@ namespace TiltBrush
         /// WARNING: do not arbitrarily rename these enum values.
         /// There is magic in MapCommandToKeyboard that relies on SketchCommand values having
         /// the same names as KeyboardShortcut values.
+        /// 警告：不要随意重命名这些枚举值。
+        /// MapCommandToKeyboard中有一种魔力，它依赖于与键盘快捷方式值同名的SketchCommand值。
         public enum KeyboardShortcut
         {
             LockToHead,
@@ -165,6 +172,8 @@ namespace TiltBrush
         // The keycodes are an "or", not an "and". Just one of the keycodes
         // in the keycode collections has to be registered for the shortcut to be
         // active.
+        //键盘快捷键到实际键盘键的标准映射。
+        //键码是“或”，而不是“和”。只需注册keycode集合中的一个keycodes即可激活快捷方式。
         private static readonly KeyMap m_KeyMap = new KeyMap {
     { (int)KeyboardShortcut.LockToHead,                   new[] { KeyCode.LeftShift } },
     { (int)KeyboardShortcut.PivotRotation,                new[] { KeyCode.LeftControl } },
@@ -522,7 +531,7 @@ namespace TiltBrush
                     // Create new one controller infos.
                     CreateControllerInfos();
 
-                    // Swap geometry if any of our controllers is a logipen.
+                    // Swap geometry if any of our controllers is a logipen.  如果任何控制器是logipen，则交换几何体。
                     bool foundLogipen = false;
                     for (int i = 0; i < m_ControllerInfos.Length; ++i)
                     {
@@ -538,6 +547,7 @@ namespace TiltBrush
                     // Initialize handedness.
                     // The logitech pen stomps handedness because it is a handed controller, so don't
                     // respect this if we've got a pen.
+                    //初始化惯用手。              罗技笔跺手，因为它是一个手控制器，所以不要尊重这一点，如果我们有一支笔。
                     if (!foundLogipen)
                     {
                         WandOnRight = (PlayerPrefs.GetInt(PLAYER_PREF_WAND_ON_RIGHT, 0) != 0);
@@ -725,6 +735,7 @@ namespace TiltBrush
             // Here you can limit the given command to a specific scope, e.g. only allowing it on the Wand
             // or Brush, but the the controller info is responsible for how that command is mapped to the
             // hardware.
+            //在这里，您可以将给定的命令限制在特定的范围内，例如，只允许在棒或刷子上使用，但控制器信息负责该命令如何映射到硬件。
 
             switch (rCommand)
             {
@@ -753,6 +764,7 @@ namespace TiltBrush
             // Here you can limit the given command to a specific scope, e.g. only allowing it on the Wand
             // or Brush, but the the controller info is responsible for how that command is mapped to the
             // hardware.
+            //在这里，您可以将给定的命令限制在特定的范围内，例如，只允许在棒或刷子上使用，但控制器信息负责该命令如何映射到硬件。
 
             KeyboardShortcut? shortcut = MapCommandToKeyboard(rCommand);
 
@@ -1008,6 +1020,10 @@ namespace TiltBrush
             return null;
         }
 
+        /// <summary>
+        /// 获取笔刷控制器附着点
+        /// </summary>
+        /// <returns></returns>
         public Transform GetBrushControllerAttachPoint()
         {
             int iMappedIndex = (int)ControllerName.Brush;

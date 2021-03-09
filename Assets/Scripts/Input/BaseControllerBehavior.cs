@@ -323,6 +323,7 @@ namespace TiltBrush
 
         /// Swaps the behaviors associated with the controller geometries.
         /// The geometries themselves do not move.
+        /// ///交换与控制器几何体关联的行为。              ///几何体本身不会移动。
         public static void SwapBehaviors(BaseControllerBehavior a, BaseControllerBehavior b)
         {
             // Well, this is a bit roundabout, because the behavior is the parent of the geometry
@@ -391,7 +392,6 @@ namespace TiltBrush
         {
             return m_Tint * (m_BaseIntensity + m_GlowIntensity);
         }
-
 
 
         public void EnableTransformVisuals(bool bEnable, float fIntensity)

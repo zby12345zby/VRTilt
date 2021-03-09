@@ -19,6 +19,7 @@ using UnityEngine;
 namespace TiltBrush
 {
     ///  The base class for any component that is attached to, and controlled by, a UIComponentManager.
+    ///  附加到UIComponentManager并由其控制的任何组件的基类。
     public abstract class UIComponent : MonoBehaviour
     {
         public const float kUnavailableTintAmount = 0.4f;
@@ -145,7 +146,7 @@ namespace TiltBrush
 
             RegisterComponent();
 
-            // Create description with initial description values.
+            // Create description with initial description values. //使用初始描述值创建描述。
             SetDescriptionText(Description, DescriptionExtra);
         }
 
@@ -395,6 +396,7 @@ namespace TiltBrush
 
         // This function is used by components that have colliders that need to extend the
         // parent's enveloping collider.  Usage of this function should be exceptional.
+        //此函数由具有需要扩展父级包络碰撞器的碰撞器的组件使用。这个函数的用法应该是例外的。
         virtual public bool RaycastAgainstCustomCollider(Ray ray, out RaycastHit hitInfo, float dist)
         {
             hitInfo = new RaycastHit();

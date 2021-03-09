@@ -353,6 +353,8 @@ namespace TiltBrush
                     // AdjustButtonPositionAndScale should be before OnButtonPressed.
                     // Buttons that trigger popups reset their scale, which is stomped by
                     // this if OnButtonPressed is called first.
+                    //调整按钮位置和刻度应在按下按钮之前。
+                    //触发弹出窗口的按钮会重置其比例，如果先调用OnButtonPressed，则会被此按钮踩踏。
                     AdjustButtonPositionAndScale(m_ZAdjustClick, m_HoverScale, m_HoverBoxColliderGrow);
                     OnButtonPressed();
                     m_CurrentButtonState = ButtonState.Pressed;

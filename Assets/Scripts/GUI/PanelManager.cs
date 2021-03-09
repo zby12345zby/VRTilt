@@ -28,8 +28,9 @@ namespace TiltBrush
         public bool m_ModeMono;
         public bool m_ModeQuest;
         public bool m_ModeGvr;
-        public bool m_Basic;
-        public bool m_Advanced;
+
+        public bool m_Basic;//是否存在基础面板
+        public bool m_Advanced;//是否存在高级面板
 
         public bool IsValidForSdkMode(SdkMode mode)
         {
@@ -375,6 +376,7 @@ namespace TiltBrush
         // Unique panels do not change when toggling basic/advanced mode.
         // A unique panel is one that is guaranteed to not have a basic/advanced counterpart.  That
         // is, it's guaranteed that <=1 exists.
+        //切换基本/高级模式时，独特面板不会更改。              //唯一的面板是保证没有基本/高级对应的面板。也就是说，保证存在<=1。
         public bool IsPanelUnique(BasePanel.PanelType type)
         {
             return IsAdminPanel(type) ||
@@ -424,9 +426,10 @@ namespace TiltBrush
             m_CachedPanelLayouts.PopulateFromPlayerPrefs();
 
             // Run through our panel map and create each panel, if it is valid for this SDK Mode.
+            //运行我们的面板映射并创建每个面板，如果它对这个SDK模式有效的话。
             for (int i = 0; i < m_PanelMap.Length; ++i)
             {
-                // Don't bother with the sketch surface, it's in the Main scene already.
+                // Don't bother with the sketch surface, it's in the Main scene already. 不用担心草图表面，它已经在主场景中了。
                 BasePanel.PanelType type = (BasePanel.PanelType)i;
                 if (type == BasePanel.PanelType.SketchSurface)
                 {
@@ -435,14 +438,14 @@ namespace TiltBrush
 
                 if (!App.Instance.StartupError && m_PanelMap[i].IsValidForSdkMode(App.Config.m_SdkMode))
                 {
-                    // Only create one of our unique panels
+                    // Only create one of our unique panels //只创建一个我们独特的面板
                     if (IsPanelUnique(type))
                     {
                         CreatePanel(m_PanelMap[i], false);
                     }
                     else
                     {
-                        // Create a panel for each mode.
+                        // Create a panel for each mode. //为每个模式创建一个面板。
                         if (m_PanelMap[i].m_Basic)
                         {
                             CreatePanel(m_PanelMap[i], false);

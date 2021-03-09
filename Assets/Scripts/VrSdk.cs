@@ -23,7 +23,6 @@ using OVROverlay = UnityEngine.MonoBehaviour;
 
 namespace TiltBrush
 {
-
     // If these names are used in analytics etc, they must be protected from obfuscation.
     // Do not change the names of any of them, unless they've never been released.
     //如果这些名称用于分析等，必须防止混淆。              
@@ -58,6 +57,13 @@ namespace TiltBrush
     // broken out into hardware- and SDK-specific modules, which can be loaded and unloaded at startup
     // or build time.
     //
+    //VrSdk是对实际VR硬件和SDK的抽象。它负责：             
+    //*初始化虚拟现实系统、摄像头、控制器和相关状态。
+    //*通过非特定接口提供特定于硬件和SDK的控件。
+    //*提供对SDK发送的事件的抽象访问。
+    //*公开查询硬件和SDK功能的接口。
+    //
+    //TODO:在当前的形式中，VrSdk是单片的，尽管它最终应该被分解成硬件和SDK特定的模块，这些模块可以在启动或构建时加载和卸载。
     public class VrSdk : MonoBehaviour
     {
         [SerializeField] private float m_AnalogGripBinaryThreshold_Rift;
@@ -66,7 +72,7 @@ namespace TiltBrush
         [SerializeField] private float m_OverlayMaxAlpha = 1.0f;
         [SerializeField] private float m_OverlayMaxSize = 8;
 
-        // VR  Data and Prefabs for specific VR systems
+        // VR  Data and Prefabs for specific VR systems //用于特定虚拟现实系统的虚拟现实数据和预制件
         [SerializeField] private GameObject m_VrSystem;
         [SerializeField] private GameObject m_SteamUninitializedControlsPrefab;
         [SerializeField] private GameObject m_SteamViveControlsPrefab;
@@ -75,9 +81,9 @@ namespace TiltBrush
         [SerializeField] private GameObject m_SteamWmrControlsPrefab;
         [SerializeField] private GameObject m_SteamKnucklesControlsPrefab;
         [SerializeField] private GameObject m_SteamCosmoControlsPrefab;
-        // Prefab for the old-style Touch controllers, used only for Rift
+        // Prefab for the old-style Touch controllers, used only for Rift //用于旧触摸控制器的预制，仅用于裂痕
         [SerializeField] private GameObject m_OculusRiftControlsPrefab;
-        // Prefab for the new-style Touch controllers, used for Rift-S and Quest
+        // Prefab for the new-style Touch controllers, used for Rift-S and Quest 用于裂谷和探索的新型触摸控制器的预制
         [SerializeField] private GameObject m_OculusQuestControlsPrefab;
         [SerializeField] private GameObject m_GvrPointerControlsPrefab;
         [SerializeField] private GameObject m_NonVrControlsPrefab;
@@ -92,6 +98,8 @@ namespace TiltBrush
         // This is the source of truth for controllers.  InputManager.m_ControllerInfos stores
         // links to some of these components, but may be out of date for a frame when
         // controllers change.
+        //运行时生成的控制器
+        //这是控制者的真理之源。InputManager.m_ControllerInfos存储指向其中一些组件的链接，但当控制器更改时，该帧可能已过期。
         private VrControllers m_VrControls;
         public VrControllers VrControls { get { return m_VrControls; } }
 
@@ -137,7 +145,7 @@ namespace TiltBrush
         // Public Events
         // -------------------------------------------------------------------------------------------- //
 
-        // Called when new poses are ready.
+        // Called when new poses are ready. 当新姿势准备好时调用。
         public event Action NewControllerPosesApplied;
 
         // -------------------------------------------------------------------------------------------- //

@@ -1023,14 +1023,15 @@ namespace TiltBrush
                 //see if we're grabbing a widget//看看我们是否抓到了一个小部件
                 UpdateGrab();
 
-                //see if we're looking at a gaze object
+                //see if we're looking at a gaze object  //看看我们是不是在看一个凝视的物体
                 RefreshCurrentGazeObject();
 
-                // Tools allowed when widgets aren't grabbed.
+                // Tools allowed when widgets aren't grabbed.  //不抓取小部件时允许使用的工具。
                 bool bWidgetGrabOK = m_GrabWidgetState == GrabWidgetState.None;
 
                 // If we don't have a widget held and we're not grabbing the world with the brush controller,
                 // update tools.
+                //如果我们没有一个小部件持有，我们没有抓住世界与刷控制器，更新工具。
                 if (bWidgetGrabOK && !m_GrabBrush.grabbingWorld)
                 {
                     if (m_CurrentGazeObject != -1 && !m_WorldBeingGrabbed)
@@ -1063,7 +1064,7 @@ namespace TiltBrush
                             case InputState.Load: UpdateLoadInput(); break;
                         }
 
-                        //keep pointer locked in the right spot, even if it's hidden
+                        //keep pointer locked in the right spot, even if it's hidden //保持指针锁定在正确的位置，即使它是隐藏的
                         if (m_SketchSurfacePanel.ActiveTool.LockPointerToSketchSurface())
                         {
                             Vector3 vPointerPos = Vector3.zero;
@@ -2912,16 +2913,17 @@ namespace TiltBrush
 
             bool hasController = m_ControlsType == ControlsType.SixDofControllers;
 
-            //if we're re-positioning a panel, keep it active
+            //if we're re-positioning a panel, keep it active //如果我们要定位一个面板，保持它活动
             if (m_PositioningPanelWithHead)
             {
                 m_CurrentGazeObject = iPrevGazeObject;
             }
             // Only activate gaze objects if we're in standard input mode, and if we don't have the 'draw'
             // button held.
+            //只有当我们处于标准输入模式，并且没有按住“绘制”按钮时，才激活凝视对象。
             else if ((bGazeAllowed || (iPrevGazeObject != -1)))
             {
-                //reset hit flags
+                //reset hit flags  //重置命中标志
                 for (int i = 0; i < m_GazeResults.Length; ++i)
                 {
                     m_GazeResults[i].m_HitWithGaze = false;
@@ -2930,13 +2932,14 @@ namespace TiltBrush
                 }
 
                 // If we're in controller mode, find the nearest colliding widget that might get in our way.
+                //如果我们在控制器模式，找到最近的碰撞小部件，可能会妨碍我们的方式。
                 float fNearestWidget = 99999.0f;
                 if (hasController)
                 {
                     fNearestWidget = m_WidgetManager.DistanceToNearestWidget(m_GazeControllerRay);
                 }
 
-                //check all panels for gaze hit
+                //check all panels for gaze hit //检查所有面板是否有凝视命中
                 bool bRequireVisibilityCheck = !hasController || (iPrevGazeObject == -1);
                 if (m_PanelManager.PanelsAreStable())
                 {
@@ -2945,7 +2948,7 @@ namespace TiltBrush
                     int panelsHit = 0;
                     for (int i = 0; i < aAllPanels.Count; ++i)
                     {
-                        // Ignore fixed panels when they are not visible.
+                        // Ignore fixed panels when they are not visible. //当固定面板不可见时忽略它们。
                         if (!m_PanelManager.GazePanelsAreVisible() && aAllPanels[i].m_Panel.m_Fixed)
                         {
                             continue;
@@ -2953,7 +2956,7 @@ namespace TiltBrush
 
                         if (aAllPanels[i].m_Panel.gameObject.activeSelf && aAllPanels[i].m_Panel.IsAvailable())
                         {
-                            //make sure this b-snap is in view
+                            //make sure this b-snap is in view 确定这个b-snap在视野之内
                             Vector3 vToPanel = aAllPanels[i].m_Panel.transform.position - m_CurrentGazeRay.origin;
                             vToPanel.Normalize();
                             if (!bRequireVisibilityCheck || Vector3.Angle(vToPanel, m_CurrentGazeRay.direction) < m_GazeMaxAngleFromFacing)
@@ -2963,9 +2966,11 @@ namespace TiltBrush
                                     if (aAllPanels[i].m_Panel.HasMeshCollider())
                                     {
                                         //make sure the angle between the pointer and the panel forward is below our max angle
+                                        //确保指针和面板之间的角度低于我们的最大角度
                                         if (Vector3.Angle(aAllPanels[i].m_Panel.transform.forward, m_GazeControllerRay.direction) < m_GazeMaxAngleFromPointing)
                                         {
                                             //make sure the angle between the user-to-panel and the panel forward is reasonable
+                                            //确保用户至面板和面板向前的角度合理
                                             if (Vector3.Angle(aAllPanels[i].m_Panel.transform.forward, vToPanel) < m_GazeMaxAngleFacingToForward)
                                             {
                                                 m_GazeResults[i].m_WithinView = true;
@@ -2977,6 +2982,7 @@ namespace TiltBrush
                                                 if (bRayHit)
                                                 {
                                                     //if the ray starts inside the panel, we won't get a good hit point, it'll just be zero
+                                                    //如果射线从面板内部开始，我们就得不到一个好的命中点，它只会是零
                                                     if (rHitInfo.point.sqrMagnitude > 0.1f)
                                                     {
                                                         if (rHitInfo.distance < fNearestWidget)
@@ -3007,6 +3013,8 @@ namespace TiltBrush
 
                     // No panels hit within normal ray distance.
                     // Check if previous panel still pointed to.
+                    //在正常光线距离内没有面板被击中。
+                    //检查前面板是否仍指向。
                     if (panelsHit == 0)
                     {
                         if (iPrevGazeObject != -1)
@@ -3038,7 +3046,7 @@ namespace TiltBrush
                     }
                 }
 
-                //determine what panel we hit, take the one with the lowest controller distance
+                //determine what panel we hit, take the one with the lowest controller distance //确定我们点击的面板，取控制器距离最小的面板
                 float fControllerDist = 999.0f;
                 int iControllerIndex = -1;
                 if (hasController)
@@ -3056,7 +3064,7 @@ namespace TiltBrush
                     }
                 }
 
-                //if we found something near our controller, take it
+                //if we found something near our controller, take it //如果我们在控制器附近发现什么东西，拿着它
                 if (iControllerIndex != -1)
                 {
                     m_CurrentGazeObject = iControllerIndex;
@@ -3074,6 +3082,7 @@ namespace TiltBrush
                 else
                 {
                     //nothing near the controller, see if we're looking at the previous
+                    //控制器附近什么也没有，看看我们是不是在看前一个
                     if (iPrevGazeObject != -1 && m_GazeResults[iPrevGazeObject].m_HitWithGaze)
                     {
                         m_CurrentGazeObject = iPrevGazeObject;
@@ -3262,7 +3271,7 @@ namespace TiltBrush
                 currentPanel.UpdateReticleOffset(m_MouseDeltaX, m_MouseDeltaY);
             }
 
-            // Keep reticle locked in the right spot.
+            // Keep reticle locked in the right spot. //保持十字线锁定在正确的位置。
             Vector3 reticlePos = Vector3.zero;
             Vector3 reticleForward = Vector3.zero;
             if (hasController)

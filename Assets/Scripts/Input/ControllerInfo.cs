@@ -20,14 +20,15 @@ namespace TiltBrush
     using SketchCommands = InputManager.SketchCommands;
 
     /// <summary>
-    /// Handling controller input calls
+    /// Handling controller input calls 处理控制器输入调用
     /// </summary>
     public abstract class ControllerInfo
     {
-        // The various inputs available on VR controlllers.
+        // The various inputs available on VR controlllers. //VR控制器上提供的各种输入。
 
         // The invalid position (0,0) is excluded from all the pad buttons,
         // except for "Any".
+        //无效位置（0,0）从所有键盘按钮中排除，              //除了“任何”。
         protected static bool IsInPosition(Vector2 padOrStickPos, VrInput input)
         {
             switch (input)
@@ -154,6 +155,8 @@ namespace TiltBrush
         // Maps commands to VR Inputs and returns true if the input is actively pressed
 
         /// Returns true if the current command is active (e.g. the button is being pressed).
+        /// 将命令映射到VR输入，如果主动按下输入，则返回true
+        /// 如果当前命令处于活动状态（例如按下按钮），则返回true。
         public bool GetCommand(SketchCommands rCommand)
         {
             switch (rCommand)
@@ -187,7 +190,7 @@ namespace TiltBrush
             return false;
         }
 
-        /// Returns true if the current command *just* became active (rising-edge trigger).
+        /// Returns true if the current command *just* became active (rising-edge trigger). ///如果当前命令*刚刚*激活（上升沿触发器），则返回true。
         public bool GetCommandDown(SketchCommands rCommand)
         {
             switch (rCommand)
@@ -231,8 +234,8 @@ namespace TiltBrush
         // -------------------------------------------------------------------------------------------- //
         // Useful in scenarios where a button should be held for a timeout period, e.g. when sharing
         // videos or trashing gifs.
-
-        /// Helper function to translate commands to VR Inputs.
+        //在按钮应保持一段超时时间的情况下非常有用，例如在共享视频或销毁gif时。
+        /// Helper function to translate commands to VR Inputs. 帮助函数将命令转换为VR输入。
         public VrInput? GetCommandHoldInput(SketchCommands rCommand)
         {
             switch (rCommand)
@@ -254,6 +257,7 @@ namespace TiltBrush
 
         /// Returns true if the given command was held for longer than the threshold.
         /// To get the current progress, see GetCommandHoldProgress.
+        /// ///如果给定命令的保留时间超过阈值，则返回true。              ///要获取当前进度，请参阅GetCommandHoldProgress。
         public bool GetCommandHeld(SketchCommands rCommand)
         {
             VrInput? vrInput = GetCommandHoldInput(rCommand);
@@ -284,7 +288,7 @@ namespace TiltBrush
             return Mathf.Clamp01(value.y / ButtonTimerThreshold);
         }
 
-        /// Returns true if the given button was held longer than the long-press threshold.
+        /// Returns true if the given button was held longer than the long-press threshold. ///如果给定按钮的按住时间超过长按阈值，则返回true。
         private bool UpdateCommandHold(VrInput input)
         {
             bool active = GetVrInput(input);
@@ -312,7 +316,7 @@ namespace TiltBrush
             return false;
         }
 
-        /// Returns the same value as GetVrInput(VrControllerInput.Trigger)
+        /// Returns the same value as GetVrInput(VrControllerInput.Trigger) //返回与GetVrInput相同的值(VrControllerInput.Trigger)
         public bool IsTrigger()
         {
             return GetVrInput(VrInput.Trigger);
@@ -379,9 +383,14 @@ namespace TiltBrush
         ///   involve some hysteresis to prevent bouncing.
         /// - For thumbsticks, this means pushed far enough that the value is outside the deadzone.
         /// - For touchpads, this means being touched at all.
+        /// 如果当前正在激活指定的输入，则返回true。
+        /// -对于按钮，这意味着按下足够远，使按钮接合，并可能涉及一些滞后，以防止反弹。
+        /// -对于指杆，这意味着推得足够远，使值超出死区。
+        /// -对于触摸板，这意味着完全可以触摸。
         public abstract bool GetVrInput(VrInput input);
 
         /// Returns true if the specified input has just been activated (rising-edge trigger).
+        /// 如果指定的输入刚刚激活（上升边触发器），则返回true。
         public abstract bool GetVrInputDown(VrInput input);
 
         /// Returns true if the specified input is currently being touched, and if the controller

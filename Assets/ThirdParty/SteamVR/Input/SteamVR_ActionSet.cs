@@ -306,7 +306,7 @@ namespace Valve.VR
 
         public CreateType GetCopy<CreateType>() where CreateType : SteamVR_ActionSet, new()
         {
-            if (SteamVR_Input.ShouldMakeCopy()) //no need to make copies at runtime
+            if (SteamVR_Input.ShouldMakeCopy()) //no need to make copies at runtime  //不需要在运行时复制
             {
                 CreateType actionSet = new CreateType();
                 actionSet.actionSetPath = this.actionSetPath;

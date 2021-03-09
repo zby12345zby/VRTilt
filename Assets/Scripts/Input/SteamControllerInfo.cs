@@ -22,6 +22,7 @@ namespace TiltBrush
     {
         // Helper that binds to a particular frame (current or last) and a particular controller,
         // then lets us look up that input.
+        //绑定到特定帧（当前或最后一帧）和特定控制器的助手，然后让我们查找该输入。
         private struct GetVrInputHelper
         {
             private readonly SteamVR_Input_Sources m_index;
@@ -375,7 +376,7 @@ namespace TiltBrush
             return GetVrInputForFrame(input, currentFrame: true);
         }
 
-        /// Returns true if the specified button was just pressed (rising-edge trigger).
+        /// Returns true if the specified button was just pressed (rising-edge trigger). //如果刚刚按下指定的按钮（上升沿触发器），则返回true。
         public override bool GetVrInputDown(VrInput input)
         {
             if (!IndexIsValid()) { return false; }

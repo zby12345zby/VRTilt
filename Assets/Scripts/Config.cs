@@ -37,6 +37,7 @@ namespace TiltBrush
 
     // These names are used in our analytics, so they must be protected from obfuscation.
     // Do not change the names of any of them, unless they've never been released.
+    //这些名称在我们的分析中使用，因此必须防止混淆。              //不要改变他们的名字，除非他们从未被释放。
     [Serializable]
     public enum SdkMode
     {
@@ -146,9 +147,10 @@ namespace TiltBrush
 
         // This indicates which hardware (Rift or Vive) is being used. This is distinct from which SDK
         // is being used (Oculus VR, Steam's Open VR, Monoscopic, etc.).
+        //这表示正在使用哪个硬件（Rift或Vive）。这与正在使用的SDK不同（Oculus VR、Steam的Open VR、Monoscopic等）。
         public VrHardware VrHardware
         {
-            // This is set lazily the first time VrHardware is accesssed.
+            // This is set lazily the first time VrHardware is accesssed. //这是第一次访问VrHardware时延迟设置的。
             get
             {
                 if (m_VrHardware == TiltBrush.VrHardware.Unset)
@@ -166,7 +168,7 @@ namespace TiltBrush
                     }
                     else if (m_SdkMode == SdkMode.SteamVR)
                     {
-                        // If SteamVR fails for some reason we will discover it here.
+                        // If SteamVR fails for some reason we will discover it here./如果SteamVR因某种原因失败，我们将在这里发现它。
                         try
                         {
                             if (Valve.VR.OpenVR.System == null)
@@ -182,6 +184,7 @@ namespace TiltBrush
                         }
 
                         // GetHwTrackedInSteamVr relies on headset detection, so controllers don't have to be on.
+                        //GetHwTrackedInSteamVr依赖于头戴式耳机检测，因此控制器不必开启。
                         m_VrHardware = GetHwTrackedInSteamVr();
                     }
                     else if (m_SdkMode == SdkMode.Gvr)
@@ -666,7 +669,7 @@ namespace TiltBrush
             }
         }
 
-        // Checking what kind of hardware (Rift, Vive, of WMR) is being used in SteamVR.
+        // Checking what kind of hardware (Rift, Vive, of WMR) is being used in SteamVR.//检查SteamVR中使用了哪种硬件（Rift、Vive和WMR）。
         private VrHardware GetHwTrackedInSteamVr()
         {
             string manufacturer = GetSteamVrDeviceStringProperty(

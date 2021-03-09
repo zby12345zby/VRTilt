@@ -67,6 +67,7 @@ namespace TiltBrush
 
         // These names are used in our player prefs, so they must be protected from obfuscation
         // Do not change the names of any of them, unless they've never been released.
+        //这些名字在我们的播放器首选项中使用，因此必须防止混淆              //不要改变他们的名字，除非他们从未被释放。
         [Serializable]
         public enum PanelType
         {
@@ -391,6 +392,7 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
 
             // Creating a popup when a popup exists will generate a temp collider.  This is to prevent
             // forced, accidental out of bounds user input.
+            //当弹出窗口存在时创建弹出窗口将生成临时碰撞器。这是为了防止强制的、意外的越界用户输入。
             if (m_TempPopUpCollider != null)
             {
                 BoxCollider tempCollider = m_TempPopUpCollider.GetComponent<BoxCollider>();
@@ -403,7 +405,7 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
                 }
             }
 
-            // If we've got a pop-up, check collision against that guy first.
+            // If we've got a pop-up, check collision against that guy first. //如果我们有一个弹出窗口，先检查和那个家伙的碰撞。
             if (m_ActivePopUp != null)
             {
                 var collider = m_ActivePopUp.GetCollider();
@@ -412,11 +414,11 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
                     m_ActivePopUp.GetCollider().Raycast(rRay, out rHitInfo, fDist);
             }
 
-            // Check custom colliders on components.
+            // Check custom colliders on components. //检查组件上的自定义碰撞器。
             bReturnValue = bReturnValue ||
                 m_UIComponentManager.RaycastAgainstCustomColliders(rRay, out rHitInfo, fDist);
 
-            // If we didn't have a pop-up, or collision failed, default to base mesh.
+            // If we didn't have a pop-up, or collision failed, default to base mesh. //如果没有弹出窗口，或者碰撞失败，则默认为“基础网格”。
             if (m_MeshCollider == null) { throw new InvalidOperationException("No mesh collider"); }
             bReturnValue = bReturnValue || m_MeshCollider.Raycast(rRay, out rHitInfo, fDist);
             return bReturnValue;
@@ -753,16 +755,19 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
         //  Given a position that has been proven to be a hit point on the panel's collider and the cast
         //  direction that resulted in that point, determine where the reticle should be located.
         //  Used by wand panel method of interacting with panels.
+        //给定一个已被证明是面板对撞机上一个命中点的位置和导致该点的投射方向，确定十字线应位于何处。
+        //由棒面板使用的与面板交互的方法。
         virtual public void GetReticleTransformFromPosDir(Vector3 vInPos, Vector3 vInDir, out Vector3 vOutPos, out Vector3 vForward)
         {
             //by default, the collision point is ok, and the reticle's forward should be the same as the mesh
+            //默认情况下，碰撞点是确定的，并且十字线的前进方向应该与网格相同
             vOutPos = vInPos;
             vForward = -m_Mesh.transform.forward;
 
             Vector3 dir = Vector3.forward;
             Ray rCastRay = new Ray(vInPos - vInDir * 0.5f, vInDir);
 
-            // If we have a ghost popup, collide with that to find our position.
+            // If we have a ghost popup, collide with that to find our position. //如果我们有一个幽灵弹出窗口，碰撞到那个找到我们的位置。
             if (m_TempPopUpCollider != null)
             {
                 RaycastHit rHitInfo;
@@ -1255,6 +1260,8 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
         /// Accumulates dpad input, and returns nonzero for a discrete swipe action.
         /// Return value is 1 for "backward" swipe moving a page forward
         /// and -1 for "forward" swipe moving a page backward.
+        /// 累加dpad输入，并为离散的刷卡操作返回非零。
+        /// 返回值为1表示“向后”滑动向前移动页面，返回值为-1表示“向前”滑动向后移动页面。
         protected int AccumulateSwipe()
         {
             int direction = 0;
@@ -1283,10 +1290,10 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
             return Mathf.Abs(m_SwipeRecentMotion.x) > m_SwipeThreshold;
         }
 
-        /// Panels are updated by SketchControls when they have focus.
+        /// Panels are updated by SketchControls when they have focus. ///面板具有焦点时，将通过草图控件进行更新。
         public void UpdatePanel(Vector3 vToPanel, Vector3 vHitPoint)
         {
-            // Validate input and cache it for this update.
+            // Validate input and cache it for this update. //验证输入并为此更新缓存它。
             m_InputValid = InputManager.m_Instance.GetCommand(InputManager.SketchCommands.Activate);
             if (m_EatInput)
             {
@@ -1294,7 +1301,7 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
                 m_InputValid = false;
             }
 
-            // Cache input ray for this update.
+            // Cache input ray for this update. //缓存此更新的输入光线。
             Vector3 vReticlePos = SketchControlsScript.m_Instance.GetUIReticlePos();
             m_ReticleSelectionRay = new Ray(vReticlePos - transform.forward, transform.forward);
 
@@ -1350,7 +1357,7 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
             // Update custom logic for panel.
             OnUpdatePanel(vToPanel, vHitPoint);
 
-            // Update UIComponents, with PopUps taking priority.
+            // Update UIComponents, with PopUps taking priority. //更新UIComponents，弹出窗口优先。
             if (m_ActivePopUp)
             {
                 if (!m_EatInput && m_PopUpGazeTimer > 0)
@@ -1367,6 +1374,7 @@ m_WandAttachAngle == m_WandAttachAngle_Initial;
 
                 // If a popup was just spawned, clear our active UI component, as input will now be
                 // directed to the popup.
+                //如果一个弹出窗口刚刚产生，清除我们的活动UI组件，因为输入现在将被定向到弹出窗口。
                 if (m_ActivePopUp)
                 {
                     m_UIComponentManager.ResetInput();
