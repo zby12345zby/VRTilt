@@ -12,7 +12,7 @@ namespace TiltBrush
             
         }
 
-        public override bool IsTrackedObjectValid { get; set; }
+        public override bool IsTrackedObjectValid { get { return true; }set { } }
 
 
         public override float GetGripValue()

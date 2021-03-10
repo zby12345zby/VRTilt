@@ -306,7 +306,7 @@ namespace TiltBrush
         // Private Helper Methods & Properties
         // -------------------------------------------------------------------------------------------- //
 
-        // Quick access to the Material Catalog.
+        // Quick access to the Material Catalog. //快速访问材料目录。
         private ControllerMaterialCatalog Materials
         {
             get { return ControllerMaterialCatalog.m_Instance; }
@@ -1097,7 +1097,7 @@ namespace TiltBrush
             }
         }
 
-        // Resets all materials to the default state.
+        // Resets all materials to the default state. //将所有材质重置为默认状态。
         public void ResetAll()
         {
             PadEnabled = true;

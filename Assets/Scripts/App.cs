@@ -928,8 +928,9 @@ namespace TiltBrush
 
             m_PolyAssetCatalog.UpdateCatalog();
 
+
             //update state//更新状态
-            switch (m_CurrentAppState)
+            switch (m_CurrentAppState)//运行后值为standard
             {
                 case AppState.LoadingBrushesAndLighting:
                     {
@@ -1152,6 +1153,7 @@ namespace TiltBrush
                     }
                     else
                     {
+
                         SketchControlsScript.m_Instance.UpdateControls();
                     }
 

@@ -1,16 +1,4 @@
-﻿// Copyright 2020 The Tilt Brush Authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -125,7 +113,7 @@ namespace TiltBrush
 
         private Bounds? m_RoomBoundsAabbCached;
 
-        // Cached object to avoid interop overhead
+        // Cached object to avoid interop overhead //缓存对象以避免互操作开销
         private Compositor_FrameTiming m_FrameTiming;
 
         private Action[] m_OldOnPoseApplied;
@@ -866,6 +854,11 @@ namespace TiltBrush
         {
             switch (App.Config.m_SdkMode)
             {
+                //zby加的
+                case SdkMode.ShadowMR:
+                    return DoF.Six;
+                //
+
                 case SdkMode.Oculus:
                 case SdkMode.SteamVR:
                     return DoF.Six;
@@ -1147,6 +1140,9 @@ namespace TiltBrush
         {
             switch (App.Config.m_SdkMode)
             {
+                case SdkMode.ShadowMR:
+                    return DoF.Six;
+
                 case SdkMode.Oculus:
                 case SdkMode.SteamVR:
                     return DoF.Six;

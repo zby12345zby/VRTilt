@@ -934,7 +934,7 @@ namespace TiltBrush
             m_SketchSurfacePanel.EnableSpecificTool(m_InitialTool);
             m_SurfaceLockControllerBaseScalar = m_SketchSurfacePanel.m_PanelSensitivity;
 
-            //after initializing, start with gaze objects hidden
+            //after initializing, start with gaze objects hidden  //初始化后，从隐藏的凝视对象开始
             m_CurrentGazeObject = -1;
             m_EatInputGazeObject = false;
 
@@ -983,6 +983,9 @@ namespace TiltBrush
 
         public void UpdateControls()
         {
+
+           
+
             UnityEngine.Profiling.Profiler.BeginSample("SketchControlsScript.UpdateControls");
             m_SketchSurfacePanel.m_UpdatedToolThisFrame = false;
 
@@ -1102,13 +1105,18 @@ namespace TiltBrush
             UnityEngine.Profiling.Profiler.EndSample();
         }
 
-        public void UpdateControlsPostIntro()
+        public void UpdateControlsPostIntro()//执行了
         {
+            
+
             m_PanelManager.UpdatePanels();
             UpdateCurrentGazeRay();
             UpdateGazeObjectsAnimationState();
             RefreshCurrentGazeObject();
             UpdateSwapControllers();
+
+            Debug.Log("m_CurrentGazeObject的值为：" + m_CurrentGazeObject);
+
             if (m_CurrentGazeObject > -1)
             {
                 UpdateActiveGazeObject();
@@ -1151,6 +1159,8 @@ namespace TiltBrush
 
         public void UpdateControlsForMemoryExceeded()
         {
+            
+
             UpdateGrab();
             m_SketchSurfacePanel.m_UpdatedToolThisFrame = false;
             m_PanelManager.UpdatePanels();
@@ -1219,6 +1229,7 @@ namespace TiltBrush
             //我们使用凝视光线的某些着色器效果-如边缘衰减。
             Shader.SetGlobalVector("_WorldSpaceRootCameraPosition", m_CurrentGazeRay.origin);
             bool hasController = m_ControlsType == ControlsType.SixDofControllers;
+
             if (hasController)
             {
                 if (InputManager.Brush.IsTrackedObjectValid)
@@ -2898,6 +2909,8 @@ namespace TiltBrush
 
         void RefreshCurrentGazeObject()
         {
+            Debug.DrawRay(m_GazeControllerRay.origin, m_GazeControllerRay.direction * 20);
+
             UnityEngine.Profiling.Profiler.BeginSample("SketchControlScript.RefreshCurrentGazeObject");
             int iPrevGazeObject = m_CurrentGazeObject;
             m_CurrentGazeObject = -1;
@@ -2913,16 +2926,19 @@ namespace TiltBrush
 
             bool hasController = m_ControlsType == ControlsType.SixDofControllers;
 
+
             //if we're re-positioning a panel, keep it active //如果我们要定位一个面板，保持它活动
             if (m_PositioningPanelWithHead)
             {
+
                 m_CurrentGazeObject = iPrevGazeObject;
             }
             // Only activate gaze objects if we're in standard input mode, and if we don't have the 'draw'
             // button held.
             //只有当我们处于标准输入模式，并且没有按住“绘制”按钮时，才激活凝视对象。
-            else if ((bGazeAllowed || (iPrevGazeObject != -1)))
+            else if ((bGazeAllowed || (iPrevGazeObject != -1)))//被执行
             {
+                
                 //reset hit flags  //重置命中标志
                 for (int i = 0; i < m_GazeResults.Length; ++i)
                 {
@@ -3090,7 +3106,7 @@ namespace TiltBrush
                     }
                     else
                     {
-                        //controller and gaze not near panel, pick the first panel we're looking at
+                        //controller and gaze not near panel, pick the first panel we're looking at //控制器和视线不要靠近面板，选择第一个面板
                         for (int i = 0; i < m_GazeResults.Length; ++i)
                         {
                             if (m_GazeResults[i].m_HitWithGaze)
@@ -3103,7 +3119,7 @@ namespace TiltBrush
                     }
                 }
 
-                //forcing users to look away from gaze panel
+                //forcing users to look away from gaze panel //强制用户将视线从凝视面板移开
                 if (m_EatInputGazeObject && m_CurrentGazeObject != -1)
                 {
                     m_CurrentGazeObject = -1;
@@ -3114,7 +3130,7 @@ namespace TiltBrush
                 }
             }
 
-            //if we're staring at a panel, keep our countdown fresh
+            //if we're staring at a panel, keep our countdown fresh  //如果我们盯着一个面板，保持我们的倒计时新鲜
             if (m_CurrentGazeObject != -1 || m_ForcePanelActivation)
             {
                 m_GazePanelDectivationCountdown = m_GazePanelDectivationDelay;
@@ -3197,18 +3213,21 @@ namespace TiltBrush
         /// <summary>
         /// 更新活动面板定位
         /// </summary>
-        void UpdateActiveGazeObject()
+        void UpdateActiveGazeObject()//当头盔看这头时，被执行
         {
+            Debug.Log("我是否被执行");
+
             BasePanel currentPanel = m_PanelManager.GetPanel(m_CurrentGazeObject);
             currentPanel.SetPositioningPercent(m_PositioningTimer);
             bool hasController = m_ControlsType == ControlsType.SixDofControllers;
-            // Update positioning behavior.
+
+            // Update positioning behavior. 更新定位行为。
             if (m_PositioningPanelWithHead)
             {
                 if (!InputManager.m_Instance.GetCommand(InputManager.SketchCommands.LockToHead) &&
                     !InputManager.m_Instance.GetCommand(InputManager.SketchCommands.LockToController))
                 {
-                    // No more positioning.
+                    // No more positioning. //不再定位。
                     m_PositioningPanelWithHead = false;
                     m_PanelManager.m_SweetSpot.EnableBorderSphere(false, Vector3.zero, 0.0f);
                     currentPanel.PanelHasStoppedMoving();

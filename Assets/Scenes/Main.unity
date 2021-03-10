@@ -16966,7 +16966,7 @@ MonoBehaviour:
     type: 3}
   m_NonVrControlsPrefab: {fileID: 1000011856084730, guid: 9d7a5b25efc95cd429ec738e0ccd19df,
     type: 3}
-  m_ShadowMrControlsPrefab: {fileID: 1000010438099326, guid: 51e0cfc1aea5e1f40b6534a6aba79101,
+  m_ShadowMrControlsPrefab: {fileID: 1000010438099326, guid: 1959bedb334dd1145a140cc9524de08c,
     type: 3}
   m_VrCamera: {fileID: 17776371}
 --- !u!4 &1412532063
@@ -29137,7 +29137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1915877481}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4444ce35d262aa648ad0c425a559b931, type: 3}
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1915877483
