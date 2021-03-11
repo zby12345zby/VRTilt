@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Valve.VR;
+//using Valve.VR;
 
 #if !OCULUS_SUPPORTED
 using OVROverlay = UnityEngine.MonoBehaviour;
@@ -59,7 +59,7 @@ namespace TiltBrush
     public class VrSdk : MonoBehaviour
     {
         [SerializeField] private float m_AnalogGripBinaryThreshold_Rift;
-        [SerializeField] private SteamVR_Overlay m_SteamVROverlay;
+        //[SerializeField] private SteamVR_Overlay m_SteamVROverlay;//zby注释
         [SerializeField] private GvrOverlay m_GvrOverlayPrefab;
         [SerializeField] private float m_OverlayMaxAlpha = 1.0f;
         [SerializeField] private float m_OverlayMaxSize = 8;
@@ -114,7 +114,7 @@ namespace TiltBrush
         private Bounds? m_RoomBoundsAabbCached;
 
         // Cached object to avoid interop overhead //缓存对象以避免互操作开销
-        private Compositor_FrameTiming m_FrameTiming;
+        //private Compositor_FrameTiming m_FrameTiming;//zby注释
 
         private Action[] m_OldOnPoseApplied;
 
@@ -169,16 +169,20 @@ namespace TiltBrush
 
         void Awake()
         {
+            m_OverlayMode = OverlayMode.None;//zby添加
+
             if (App.Config.IsMobileHardware && m_GvrOverlayPrefab != null)
             {
                 m_OverlayMode = OverlayMode.Mobile;
                 m_MobileOverlay = Instantiate(m_GvrOverlayPrefab);
                 m_MobileOverlay.gameObject.SetActive(false);
             }
-            else if (App.Config.m_SdkMode == SdkMode.SteamVR && m_SteamVROverlay != null)
-            {
-                m_OverlayMode = OverlayMode.Steam;
-            }
+
+            //zby注释
+            //else if (App.Config.m_SdkMode == SdkMode.SteamVR && m_SteamVROverlay != null)
+            //{
+            //    m_OverlayMode = OverlayMode.Steam;
+            //}
 #if OCULUS_SUPPORTED
     else if (App.Config.m_SdkMode == SdkMode.Oculus) {
       m_OverlayMode = OverlayMode.OVR;
@@ -234,7 +238,7 @@ namespace TiltBrush
                 {
                     SetControllerStyle(TiltBrush.ControllerStyle.InitializingSteamVR);
                 }
-                m_VrCamera.gameObject.AddComponent<SteamVR_Camera>();
+                //m_VrCamera.gameObject.AddComponent<SteamVR_Camera>();//zby注释
             }
             else if (App.Config.m_SdkMode == SdkMode.Gvr)
             {
@@ -302,16 +306,17 @@ namespace TiltBrush
         {
             if (App.Config.m_SdkMode == SdkMode.SteamVR)
             {
-                if (SteamVR.instance != null)
-                {
-                    SteamVR_Events.InputFocus.Listen(OnInputFocusSteam);
-                    SteamVR_Events.NewPosesApplied.Listen(OnNewPoses);
-                }
-                m_FrameTiming = new Compositor_FrameTiming
-                {
-                    m_nSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(
-                    typeof(Compositor_FrameTiming))
-                };
+                //zby注释
+                //if (SteamVR.instance != null)
+                //{
+                //    SteamVR_Events.InputFocus.Listen(OnInputFocusSteam);
+                //    SteamVR_Events.NewPosesApplied.Listen(OnNewPoses);
+                //}
+                //m_FrameTiming = new Compositor_FrameTiming
+                //{
+                //    m_nSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(
+                //    typeof(Compositor_FrameTiming))
+                //};
             }
             else if (App.Config.m_SdkMode == SdkMode.Oculus)
             {
@@ -340,8 +345,9 @@ namespace TiltBrush
         {
             if (App.Config.m_SdkMode == SdkMode.SteamVR)
             {
-                SteamVR_Events.InputFocus.Remove(OnInputFocusSteam);
-                SteamVR_Events.NewPosesApplied.Remove(OnNewPoses);
+                //zby注释
+                //SteamVR_Events.InputFocus.Remove(OnInputFocusSteam);
+                //SteamVR_Events.NewPosesApplied.Remove(OnNewPoses);
             }
             else if (App.Config.m_SdkMode == SdkMode.Oculus)
             {
@@ -426,14 +432,15 @@ namespace TiltBrush
         {
             if (App.Config.m_SdkMode == SdkMode.SteamVR)
             {
-                SteamVR vr = SteamVR.instance;
-                if (vr != null)
-                {
-                    if (vr.compositor.GetFrameTiming(ref m_FrameTiming, 0 /* most recent frame */))
-                    {
-                        return (int)m_FrameTiming.m_nNumDroppedFrames;
-                    }
-                }
+                //zby注释
+                //SteamVR vr = SteamVR.instance;
+                //if (vr != null)
+                //{
+                //    if (vr.compositor.GetFrameTiming(ref m_FrameTiming, 0 /* most recent frame */))
+                //    {
+                //        return (int)m_FrameTiming.m_nNumDroppedFrames;
+                //    }
+                //}
             }
             else if (App.Config.m_SdkMode == SdkMode.Oculus)
             {
@@ -503,19 +510,20 @@ namespace TiltBrush
             }
             else if (App.Config.m_SdkMode == SdkMode.SteamVR)
             {
-                var chaperone = OpenVR.Chaperone;
-                if (chaperone != null)
-                {
-                    HmdQuad_t rect = new HmdQuad_t();
-                    // 4 points, undocumented winding, undocumented convexity
-                    // Undocumented if it's an AABB
-                    // In practice, seems to always be an axis-aligned clockwise box.
-                    chaperone.GetPlayAreaRect(ref rect);
-                    var steamPoints = new[] {
-          rect.vCorners0, rect.vCorners1, rect.vCorners2, rect.vCorners3
-        };
-                    points_RS = steamPoints.Select(v => UnityFromSteamVr(v)).ToArray();
-                }
+                //zby注释
+                //        var chaperone = OpenVR.Chaperone;
+                //        if (chaperone != null)
+                //        {
+                //            HmdQuad_t rect = new HmdQuad_t();
+                //            // 4 points, undocumented winding, undocumented convexity
+                //            // Undocumented if it's an AABB
+                //            // In practice, seems to always be an axis-aligned clockwise box.
+                //            chaperone.GetPlayAreaRect(ref rect);
+                //            var steamPoints = new[] {
+                //  rect.vCorners0, rect.vCorners1, rect.vCorners2, rect.vCorners3
+                //};
+                //            points_RS = steamPoints.Select(v => UnityFromSteamVr(v)).ToArray();
+                //        }
             }
 
             if (points_RS == null)
@@ -567,11 +575,14 @@ namespace TiltBrush
             return true;
         }
 
-        /// Converts from SteamVR axis conventions and units to Unity
-        static private Vector3 UnityFromSteamVr(HmdVector3_t v)
-        {
-            return new Vector3(v.v0, v.v1, v.v2) * App.METERS_TO_UNITS;
-        }
+
+        //zby注释
+        ///// Converts from SteamVR axis conventions and units to Unity
+        //static private Vector3 UnityFromSteamVr(HmdVector3_t v)
+        //{
+        //    return new Vector3(v.v0, v.v1, v.v2) * App.METERS_TO_UNITS;
+        //}
+
 
         /// Converts from Oculus axis conventions and units to Unity
         static private Vector3 UnityFromOculus(Vector3 v)
@@ -643,7 +654,7 @@ namespace TiltBrush
                 case ControllerStyle.ShadowMRHelmet:
                     controlsPrefab = m_ShadowMrControlsPrefab;
                     break;
-                    //
+                //
 
                 case ControllerStyle.Vive:
                     controlsPrefab = m_SteamViveControlsPrefab;
@@ -800,37 +811,39 @@ namespace TiltBrush
             }
             else if (App.Config.m_SdkMode == SdkMode.SteamVR)
             {
-                // Don't swap controller input sources while we're initializing because it screws up
-                // the actions when the proper controllers are instantiated.
-                // TODO : Figure out why this screws up and fix it.  Note that this is
-                // unnecessary unless we support hot-swapping of controller types.
-                if (!IsInitializingSteamVr)
-                {
-                    BaseControllerBehavior[] behaviors = VrControls.GetBehaviors();
-                    for (int i = 0; i < behaviors.Length; ++i)
-                    {
-                        SteamVR_Behaviour_Pose pose = behaviors[i].GetComponent<SteamVR_Behaviour_Pose>();
-                        switch (pose.inputSource)
-                        {
-                            case SteamVR_Input_Sources.LeftHand:
-                                pose.inputSource = SteamVR_Input_Sources.RightHand;
-                                break;
-                            case SteamVR_Input_Sources.RightHand:
-                                pose.inputSource = SteamVR_Input_Sources.LeftHand;
-                                break;
-                            default:
-                                Debug.LogWarningFormat(
-                                    "Controller is configured as {0}.  Should be LeftHand or RightHand.",
-                                    pose.inputSource);
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-                    // Don't commit to swapping controller styles.
-                    leftRightSwapped = false;
-                }
+
+                //zby注释
+                //// Don't swap controller input sources while we're initializing because it screws up
+                //// the actions when the proper controllers are instantiated.
+                //// TODO : Figure out why this screws up and fix it.  Note that this is
+                //// unnecessary unless we support hot-swapping of controller types.
+                //if (!IsInitializingSteamVr)
+                //{
+                //    BaseControllerBehavior[] behaviors = VrControls.GetBehaviors();
+                //    for (int i = 0; i < behaviors.Length; ++i)
+                //    {
+                //        SteamVR_Behaviour_Pose pose = behaviors[i].GetComponent<SteamVR_Behaviour_Pose>();
+                //        switch (pose.inputSource)
+                //        {
+                //            case SteamVR_Input_Sources.LeftHand:
+                //                pose.inputSource = SteamVR_Input_Sources.RightHand;
+                //                break;
+                //            case SteamVR_Input_Sources.RightHand:
+                //                pose.inputSource = SteamVR_Input_Sources.LeftHand;
+                //                break;
+                //            default:
+                //                Debug.LogWarningFormat(
+                //                    "Controller is configured as {0}.  Should be LeftHand or RightHand.",
+                //                    pose.inputSource);
+                //                break;
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    // Don't commit to swapping controller styles.
+                //    leftRightSwapped = false;
+                //}
             }
             else if (App.Config.m_SdkMode == SdkMode.Gvr)
             {
@@ -840,7 +853,7 @@ namespace TiltBrush
             }
 
             //zby加的
-            else if(App.Config.m_SdkMode == SdkMode.ShadowMR)
+            else if (App.Config.m_SdkMode == SdkMode.ShadowMR)
             {
 
             }
@@ -883,8 +896,11 @@ namespace TiltBrush
             switch (m_OverlayMode)
             {
                 case OverlayMode.Steam:
-                    m_SteamVROverlay.alpha = ratio * m_OverlayMaxAlpha;
-                    OverlayEnabled = ratio > 0.0f;
+
+                    //zby注释
+                   // m_SteamVROverlay.alpha = ratio * m_OverlayMaxAlpha;
+                    //OverlayEnabled = ratio > 0.0f;
+
                     break;
                 case OverlayMode.OVR:
                     OverlayEnabled = ratio == 1;
@@ -925,7 +941,9 @@ namespace TiltBrush
                 switch (m_OverlayMode)
                 {
                     case OverlayMode.Steam:
-                        return m_SteamVROverlay.gameObject.activeSelf;
+                        //zby注释
+                        //return m_SteamVROverlay.gameObject.activeSelf;
+                        return false;//zby添加
                     case OverlayMode.OVR:
 #if OCULUS_SUPPORTED
         return m_OVROverlay.enabled;
@@ -943,7 +961,8 @@ namespace TiltBrush
                 switch (m_OverlayMode)
                 {
                     case OverlayMode.Steam:
-                        m_SteamVROverlay.gameObject.SetActive(value);
+                        //zby注释
+                        //m_SteamVROverlay.gameObject.SetActive(value);
                         break;
                     case OverlayMode.OVR:
 #if OCULUS_SUPPORTED
@@ -962,8 +981,9 @@ namespace TiltBrush
             switch (m_OverlayMode)
             {
                 case OverlayMode.Steam:
-                    m_SteamVROverlay.texture = tex;
-                    m_SteamVROverlay.UpdateOverlay();
+                    //zby注释
+                    //m_SteamVROverlay.texture = tex;
+                    //m_SteamVROverlay.UpdateOverlay();
                     break;
                 case OverlayMode.OVR:
 #if OCULUS_SUPPORTED
@@ -986,8 +1006,9 @@ namespace TiltBrush
                 case OverlayMode.Steam:
                     vOverlayPosition += (vOverlayDirection * distance);
                     vOverlayPosition.y = height;
-                    m_SteamVROverlay.transform.position = vOverlayPosition;
-                    m_SteamVROverlay.transform.forward = vOverlayDirection;
+                    //zby注释
+                    //m_SteamVROverlay.transform.position = vOverlayPosition;
+                    //m_SteamVROverlay.transform.forward = vOverlayDirection;
                     break;
                 case OverlayMode.OVR:
 #if OCULUS_SUPPORTED
@@ -1016,11 +1037,12 @@ namespace TiltBrush
             switch (m_OverlayMode)
             {
                 case OverlayMode.Steam:
-                    SteamVR rVR = SteamVR.instance;
-                    if (rVR != null && rVR.compositor != null)
-                    {
-                        rVR.compositor.FadeGrid(fadeTime, fadeToCompositor);
-                    }
+                    //zby注释
+                    //SteamVR rVR = SteamVR.instance;
+                    //if (rVR != null && rVR.compositor != null)
+                    //{
+                    //    rVR.compositor.FadeGrid(fadeTime, fadeToCompositor);
+                    //}
                     break;
                 case OverlayMode.OVR:
                     FadeBlack(fadeTime, fadeToCompositor);
@@ -1033,7 +1055,8 @@ namespace TiltBrush
             switch (m_OverlayMode)
             {
                 case OverlayMode.Steam:
-                    SteamVR_Render.pauseRendering = bPause;
+                    //zby注释
+                    //SteamVR_Render.pauseRendering = bPause;
                     break;
                 case OverlayMode.OVR:
                     // :(
@@ -1058,7 +1081,8 @@ namespace TiltBrush
             switch (App.Config.m_SdkMode)
             {
                 case SdkMode.SteamVR:
-                    SteamVR_Fade.Start(fadeToBlack ? Color.black : Color.clear, fadeTime);
+                    //zby注释
+                    //SteamVR_Fade.Start(fadeToBlack ? Color.black : Color.clear, fadeTime);
                     break;
                 case SdkMode.Oculus:
                     // TODO: using Viewpoint here is pretty gross, dependencies should not go from VrSdk
@@ -1085,18 +1109,20 @@ namespace TiltBrush
 
         // Returns false if SDK Mode uses an HMD, but it is not initialized.
         // Retruns true if SDK does not have an HMD or if it is correctly initialized.
+        //如果SDK模式使用HMD，但未初始化，则返回false。              //如果SDK没有HMD或正确初始化，则Retruns true。
         public bool IsHmdInitialized()
         {
-            if (App.Config.m_SdkMode == SdkMode.SteamVR && SteamVR.instance == null)
-            {
-                return false;
-            }
-            else if (App.Config.m_SdkMode == SdkMode.Gvr)
-            {
-                // We used to be able to check the GvrViewer state, but this has been moved internal to Unity.
-                // Now just return true and hope for the best.
-                return true;
-            }
+            //zby注释
+            //if (App.Config.m_SdkMode == SdkMode.SteamVR && SteamVR.instance == null)
+            //{
+            //    return false;
+            //}
+            //else if (App.Config.m_SdkMode == SdkMode.Gvr)
+            //{
+            //    // We used to be able to check the GvrViewer state, but this has been moved internal to Unity.
+            //    // Now just return true and hope for the best.
+            //    return true;
+            //}
 #if OCULUS_SUPPORTED
     else if (App.Config.m_SdkMode == SdkMode.Oculus && !OVRManager.isHmdPresent) {
       return false;
@@ -1116,7 +1142,7 @@ namespace TiltBrush
                 case SdkMode.Oculus:
                     return 90;
                 case SdkMode.SteamVR:
-                    return SteamVR.instance != null ? (int)SteamVR.instance.hmd_DisplayFrequency : 60;
+                    return 60;//SteamVR.instance != null ? (int)SteamVR.instance.hmd_DisplayFrequency : 60;//zby注释
                 case SdkMode.Gvr:
                     return 75;
                 case SdkMode.Monoscopic:
@@ -1128,7 +1154,7 @@ namespace TiltBrush
                 //zby加的
                 case SdkMode.ShadowMR:
                     return 60;
-                    //
+                //
 
                 default:
                     throw new NotImplementedException("Unknown VR SDK Mode");
@@ -1164,10 +1190,11 @@ namespace TiltBrush
         public void SetHmdScalingFactor(float scale)
         {
             scale = Mathf.Clamp(scale, 0.1f, 2f);
-            if (App.Config.m_SdkMode == SdkMode.SteamVR)
-            {
-                SteamVR_Camera.sceneResolutionScale = scale;
-            }
+            //zby注释
+            //if (App.Config.m_SdkMode == SdkMode.SteamVR)
+            //{
+            //    SteamVR_Camera.sceneResolutionScale = scale;
+            //}
         }
 
         // -------------------------------------------------------------------------------------------- //

@@ -3231,7 +3231,7 @@ MonoBehaviour:
   m_FakeCommandLineArgsInEditor: 
   m_PlatformConfig: {fileID: 11400000, guid: 0764a106823cbec4e8d75b2816f3cbd3, type: 2}
   m_IsExperimental: 0
-  m_SdkMode: 1
+  m_SdkMode: 6
   m_AutoProfile: 0
   m_AutoProfileWaitTime: 10
   Secrets: {fileID: 11400000, guid: 2f5f8e93c6bc7be49a5023148b50e7a0, type: 2}
@@ -8786,6 +8786,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46fe9e0b23166454c8cb73040321d78c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: 3d15826ebe1cc7f4bbfbb655cce520f7, type: 3}
@@ -16938,7 +16940,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AnalogGripBinaryThreshold_Rift: 0.9
-  m_SteamVROverlay: {fileID: 622233200}
   m_GvrOverlayPrefab: {fileID: 114044421867326160, guid: 50a6faaa5f4e1cf4487e55d232fa8d39,
     type: 3}
   m_OverlayMaxAlpha: 0.5

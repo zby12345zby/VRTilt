@@ -174,24 +174,25 @@ namespace TiltBrush
                     }
                     else if (m_SdkMode == SdkMode.SteamVR)
                     {
-                        // If SteamVR fails for some reason we will discover it here./如果SteamVR因某种原因失败，我们将在这里发现它。
-                        try
-                        {
-                            if (Valve.VR.OpenVR.System == null)
-                            {
-                                m_VrHardware = VrHardware.None;
-                                return m_VrHardware;
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            m_VrHardware = VrHardware.None;
-                            return m_VrHardware;
-                        }
+                        //zby注释
+                        //// If SteamVR fails for some reason we will discover it here./如果SteamVR因某种原因失败，我们将在这里发现它。
+                        //try
+                        //{
+                        //    if (Valve.VR.OpenVR.System == null)
+                        //    {
+                        //        m_VrHardware = VrHardware.None;
+                        //        return m_VrHardware;
+                        //    }
+                        //}
+                        //catch (Exception)
+                        //{
+                        //    m_VrHardware = VrHardware.None;
+                        //    return m_VrHardware;
+                        //}
 
-                        // GetHwTrackedInSteamVr relies on headset detection, so controllers don't have to be on.
-                        //GetHwTrackedInSteamVr依赖于头戴式耳机检测，因此控制器不必开启。
-                        m_VrHardware = GetHwTrackedInSteamVr();
+                        //// GetHwTrackedInSteamVr relies on headset detection, so controllers don't have to be on.
+                        ////GetHwTrackedInSteamVr依赖于头戴式耳机检测，因此控制器不必开启。
+                        //m_VrHardware = GetHwTrackedInSteamVr();
                     }
                     else if (m_SdkMode == SdkMode.Gvr)
                     {
@@ -663,52 +664,57 @@ namespace TiltBrush
 #endif
         }
 
-        private string GetSteamVrDeviceStringProperty(Valve.VR.ETrackedDeviceProperty property)
-        {
-            uint index = 0; // Index 0 is always the headset
-            var system = Valve.VR.OpenVR.System;
-            // If system == null, then somehow, the SteamVR SDK was not properly loaded in.
-            Debug.Assert(system != null, "OpenVR System not found, check \"Virtual Reality Supported\"");
 
-            var error = Valve.VR.ETrackedPropertyError.TrackedProp_Success;
+        //zby注释
+        //private string GetSteamVrDeviceStringProperty(Valve.VR.ETrackedDeviceProperty property)
+        //{
+        //    uint index = 0; // Index 0 is always the headset
+        //    var system = Valve.VR.OpenVR.System;
+        //    // If system == null, then somehow, the SteamVR SDK was not properly loaded in.
+        //    Debug.Assert(system != null, "OpenVR System not found, check \"Virtual Reality Supported\"");
 
-            var capacity = system.GetStringTrackedDeviceProperty(index, property, null, 0, ref error);
-            System.Text.StringBuilder buffer = new System.Text.StringBuilder((int)capacity);
-            system.GetStringTrackedDeviceProperty(index, property, buffer, capacity, ref error);
-            if (error == Valve.VR.ETrackedPropertyError.TrackedProp_Success)
-            {
-                return buffer.ToString();
-            }
-            else
-            {
-                Debug.LogErrorFormat("GetStringTrackedDeviceProperty error {0}", error.ToString());
-                return null;
-            }
-        }
+        //    var error = Valve.VR.ETrackedPropertyError.TrackedProp_Success;
+
+        //    var capacity = system.GetStringTrackedDeviceProperty(index, property, null, 0, ref error);
+        //    System.Text.StringBuilder buffer = new System.Text.StringBuilder((int)capacity);
+        //    system.GetStringTrackedDeviceProperty(index, property, buffer, capacity, ref error);
+        //    if (error == Valve.VR.ETrackedPropertyError.TrackedProp_Success)
+        //    {
+        //        return buffer.ToString();
+        //    }
+        //    else
+        //    {
+        //        Debug.LogErrorFormat("GetStringTrackedDeviceProperty error {0}", error.ToString());
+        //        return null;
+        //    }
+        //}
+
 
         // Checking what kind of hardware (Rift, Vive, of WMR) is being used in SteamVR.//检查SteamVR中使用了哪种硬件（Rift、Vive和WMR）。
         private VrHardware GetHwTrackedInSteamVr()
         {
-            string manufacturer = GetSteamVrDeviceStringProperty(
-                Valve.VR.ETrackedDeviceProperty.Prop_ManufacturerName_String);
+            //zby注释
+            //string manufacturer = GetSteamVrDeviceStringProperty(
+            //    Valve.VR.ETrackedDeviceProperty.Prop_ManufacturerName_String);
 
-            if (string.IsNullOrEmpty(manufacturer))
-            {
-                OutputWindowScript.Error("Could not determine VR Headset manufacturer.");
-                return VrHardware.Vive;
-            }
-            else if (manufacturer.Contains("Oculus"))
-            {
-                return VrHardware.Rift;
-            }
-            else if (manufacturer.Contains("WindowsMR"))
-            {
-                return VrHardware.Wmr;
-            }
-            else
-            {
-                return VrHardware.Vive;
-            }
+            //if (string.IsNullOrEmpty(manufacturer))
+            //{
+            //    OutputWindowScript.Error("Could not determine VR Headset manufacturer.");
+            //    return VrHardware.Vive;
+            //}
+            //else if (manufacturer.Contains("Oculus"))
+            //{
+            //    return VrHardware.Rift;
+            //}
+            //else if (manufacturer.Contains("WindowsMR"))
+            //{
+            //    return VrHardware.Wmr;
+            //}
+            //else
+            //{
+            //    return VrHardware.Vive;
+            //}
+            return VrHardware.MRHelmet;//zby添加
         }
 
         /// Parses a setting taken from the command line of the form --Section.Setting value

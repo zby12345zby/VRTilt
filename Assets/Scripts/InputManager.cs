@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
+//using Valve.VR;
 
 using KeyMap = System.Collections.Generic.Dictionary<
   int,
@@ -428,35 +428,36 @@ namespace TiltBrush
 
         bool SetSteamControllerStyle(SteamControllerInfo steamInfo, out string style)
         {
-            SteamVR steamVR = SteamVR.instance;
-            style = steamVR.GetStringProperty(ETrackedDeviceProperty.Prop_ControllerType_String,
-                (uint)steamInfo.TrackedPose.GetDeviceIndex());
-            if (style == "oculus_touch")
-            {
-                App.VrSdk.SetControllerStyle(ControllerStyle.OculusTouch);
-            }
-            else if (style == "knuckles")
-            {
-                App.VrSdk.SetControllerStyle(ControllerStyle.Knuckles);
-            }
-            else if (style == "vive_controller" || style == "vive_pro")
-            {
-                App.VrSdk.SetControllerStyle(ControllerStyle.Vive);
-            }
-            else if (style == "vive_cosmos_controller")
-            {
-                App.VrSdk.SetControllerStyle(ControllerStyle.OculusTouch);
-            }
-            else if (style == "wmr")
-            {
-                App.VrSdk.SetControllerStyle(ControllerStyle.Wmr);
-            }
-            else
-            {
-                // Not recognized.  This is not necessarily bad.
-                return false;
-            }
-            return true;
+            //SteamVR steamVR = SteamVR.instance;
+            //style = steamVR.GetStringProperty(ETrackedDeviceProperty.Prop_ControllerType_String,
+            //    (uint)steamInfo.TrackedPose.GetDeviceIndex());
+            //if (style == "oculus_touch")
+            //{
+            //    App.VrSdk.SetControllerStyle(ControllerStyle.OculusTouch);
+            //}
+            //else if (style == "knuckles")
+            //{
+            //    App.VrSdk.SetControllerStyle(ControllerStyle.Knuckles);
+            //}
+            //else if (style == "vive_controller" || style == "vive_pro")
+            //{
+            //    App.VrSdk.SetControllerStyle(ControllerStyle.Vive);
+            //}
+            //else if (style == "vive_cosmos_controller")
+            //{
+            //    App.VrSdk.SetControllerStyle(ControllerStyle.OculusTouch);
+            //}
+            //else if (style == "wmr")
+            //{
+            //    App.VrSdk.SetControllerStyle(ControllerStyle.Wmr);
+            //}
+            //else
+            //{
+            //    // Not recognized.  This is not necessarily bad.  //未识别。这不一定是坏事。
+            //    return false;
+            //}
+            style = "";
+            return false;
         }
 
         void Start()
@@ -484,65 +485,65 @@ namespace TiltBrush
 
         void Update()
         {
-            // If we're initializing our controllers, continue to look for them.
+            // If we're initializing our controllers, continue to look for them.  //如果我们正在初始化控制器，请继续查找它们。
             if (App.VrSdk.IsInitializingSteamVr)
             {
-                if (m_ControllerInfos[0].IsTrackedObjectValid && m_ControllerInfos[1].IsTrackedObjectValid)
-                {
-                    SteamVR steamVR = SteamVR.instance;
+                //if (m_ControllerInfos[0].IsTrackedObjectValid && m_ControllerInfos[1].IsTrackedObjectValid)
+                //{
+                //    SteamVR steamVR = SteamVR.instance;
 
-                    // Determine controllers from the 0 controller.  If that isn't recognized,
-                    // try the 1 controller.  If *that* isn't recognized, default to Vive.
-                    string controllerStyle0 = "";
-                    SteamControllerInfo steamInfo0 = m_ControllerInfos[0] as SteamControllerInfo;
-                    if (!SetSteamControllerStyle(steamInfo0, out controllerStyle0))
-                    {
-                        string controllerStyle1 = "";
-                        SteamControllerInfo steamInfo1 = m_ControllerInfos[1] as SteamControllerInfo;
-                        if (!SetSteamControllerStyle(steamInfo1, out controllerStyle1))
-                        {
-                            Debug.LogWarningFormat(
-                                "Controller styles {0} and {1} not recognized.  Defaulting to Vive.",
-                                controllerStyle0, controllerStyle1);
-                            App.VrSdk.SetControllerStyle(ControllerStyle.Vive);
-                        }
-                    }
+                //    // Determine controllers from the 0 controller.  If that isn't recognized,
+                //    // try the 1 controller.  If *that* isn't recognized, default to Vive.
+                //    string controllerStyle0 = "";
+                //    SteamControllerInfo steamInfo0 = m_ControllerInfos[0] as SteamControllerInfo;
+                //    if (!SetSteamControllerStyle(steamInfo0, out controllerStyle0))
+                //    {
+                //        string controllerStyle1 = "";
+                //        SteamControllerInfo steamInfo1 = m_ControllerInfos[1] as SteamControllerInfo;
+                //        if (!SetSteamControllerStyle(steamInfo1, out controllerStyle1))
+                //        {
+                //            Debug.LogWarningFormat(
+                //                "Controller styles {0} and {1} not recognized.  Defaulting to Vive.",
+                //                controllerStyle0, controllerStyle1);
+                //            App.VrSdk.SetControllerStyle(ControllerStyle.Vive);
+                //        }
+                //    }
 
-                    // Null out controller infos to start fresh.
-                    for (int i = 0; i < m_ControllerInfos.Length; ++i)
-                    {
-                        m_ControllerInfos[i] = null;
-                    }
+                //    // Null out controller infos to start fresh.  //空出控制器信息以开始刷新。
+                //    for (int i = 0; i < m_ControllerInfos.Length; ++i)
+                //    {
+                //        m_ControllerInfos[i] = null;
+                //    }
 
-                    // Create new one controller infos.
-                    CreateControllerInfos();
+                //    // Create new one controller infos.
+                //    CreateControllerInfos();
 
-                    // Swap geometry if any of our controllers is a logipen.  如果任何控制器是logipen，则交换几何体。
-                    bool foundLogipen = false;
-                    for (int i = 0; i < m_ControllerInfos.Length; ++i)
-                    {
-                        SteamControllerInfo info = m_ControllerInfos[i] as SteamControllerInfo;
-                        DetectLogitechVrPen pen = info.Behavior.GetComponent<DetectLogitechVrPen>();
-                        if (pen != null)
-                        {
-                            pen.Initialize(info.TrackedPose.GetDeviceIndex());
-                            foundLogipen = foundLogipen || pen.IsPen;
-                        }
-                    }
+                //    // Swap geometry if any of our controllers is a logipen.  如果任何控制器是logipen，则交换几何体。
+                //    bool foundLogipen = false;
+                //    for (int i = 0; i < m_ControllerInfos.Length; ++i)
+                //    {
+                //        SteamControllerInfo info = m_ControllerInfos[i] as SteamControllerInfo;
+                //        DetectLogitechVrPen pen = info.Behavior.GetComponent<DetectLogitechVrPen>();
+                //        if (pen != null)
+                //        {
+                //            pen.Initialize(info.TrackedPose.GetDeviceIndex());
+                //            foundLogipen = foundLogipen || pen.IsPen;
+                //        }
+                //    }
 
-                    // Initialize handedness.
-                    // The logitech pen stomps handedness because it is a handed controller, so don't
-                    // respect this if we've got a pen.
-                    //初始化惯用手。              罗技笔跺手，因为它是一个手控制器，所以不要尊重这一点，如果我们有一支笔。
-                    if (!foundLogipen)
-                    {
-                        WandOnRight = (PlayerPrefs.GetInt(PLAYER_PREF_WAND_ON_RIGHT, 0) != 0);
-                    }
+                //    // Initialize handedness.
+                //    // The logitech pen stomps handedness because it is a handed controller, so don't
+                //    // respect this if we've got a pen.
+                //    //初始化惯用手。              罗技笔跺手，因为它是一个手控制器，所以不要尊重这一点，如果我们有一支笔。
+                //    if (!foundLogipen)
+                //    {
+                //        WandOnRight = (PlayerPrefs.GetInt(PLAYER_PREF_WAND_ON_RIGHT, 0) != 0);
+                //    }
 
-                    // Refresh pointer angle and rendering.
-                    PointerManager.m_Instance.RefreshFreePaintPointerAngle();
-                    PointerManager.m_Instance.RequestPointerRendering(true);
-                }
+                //    // Refresh pointer angle and rendering.
+                //    PointerManager.m_Instance.RefreshFreePaintPointerAngle();
+                //    PointerManager.m_Instance.RequestPointerRendering(true);
+                //}
             }
             else
             {
@@ -686,7 +687,7 @@ namespace TiltBrush
             {
                 case SketchCommands.Activate:
                     return Brush.GetCommand(rCommand) || (!isDemoMode && GetMouseButton(0));
-                    
+
                 case SketchCommands.AltActivate:
                     return GetMouseButton(1) || Wand.GetCommand(rCommand);
                 case SketchCommands.LockToHead:
