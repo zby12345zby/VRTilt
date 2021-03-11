@@ -856,7 +856,7 @@ namespace TiltBrush
             {
                 //zby加的
                 case SdkMode.ShadowMR:
-                    return DoF.Six;
+                    return DoF.None;
                 //
 
                 case SdkMode.Oculus:

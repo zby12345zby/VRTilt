@@ -1049,7 +1049,7 @@ namespace TiltBrush
                     }
                     else
                     {
-                        //standard input, no gaze object
+                        //standard input, no gaze object //标准输入，无凝视对象
                         if (m_InputStateConfigs[(int)m_CurrentInputState].m_AllowMovement)
                         {
                             m_SketchSurfacePanel.UpdateReticleOffset(m_MouseDeltaX, m_MouseDeltaY);
@@ -1115,7 +1115,6 @@ namespace TiltBrush
             RefreshCurrentGazeObject();
             UpdateSwapControllers();
 
-            Debug.Log("m_CurrentGazeObject的值为：" + m_CurrentGazeObject);
 
             if (m_CurrentGazeObject > -1)
             {
@@ -1224,6 +1223,9 @@ namespace TiltBrush
             var head = ViewpointScript.Head;
             m_CurrentGazeRay = new Ray(head.position, head.forward);
             m_CurrentHeadOrientation = head.rotation;
+
+            //zby加的
+            Debug.DrawRay(m_CurrentGazeRay.origin, m_CurrentGazeRay.direction * 30f);
 
             // We use the gaze ray for certain shader effects - like edge falloff.
             //我们使用凝视光线的某些着色器效果-如边缘衰减。
@@ -2907,9 +2909,10 @@ namespace TiltBrush
             return widget.GetActivationScore(vControllerPos, name) >= 0.0f;
         }
 
-        void RefreshCurrentGazeObject()
+        void RefreshCurrentGazeObject()//m_CurrentGazeObject：头部凝视时为7（面板索引），不凝视时为-1
         {
             Debug.DrawRay(m_GazeControllerRay.origin, m_GazeControllerRay.direction * 20);
+
 
             UnityEngine.Profiling.Profiler.BeginSample("SketchControlScript.RefreshCurrentGazeObject");
             int iPrevGazeObject = m_CurrentGazeObject;
@@ -2975,6 +2978,8 @@ namespace TiltBrush
                             //make sure this b-snap is in view 确定这个b-snap在视野之内
                             Vector3 vToPanel = aAllPanels[i].m_Panel.transform.position - m_CurrentGazeRay.origin;
                             vToPanel.Normalize();
+
+                            //如果头部（眼睛）正面凝视角度在一定范围内，为true
                             if (!bRequireVisibilityCheck || Vector3.Angle(vToPanel, m_CurrentGazeRay.direction) < m_GazeMaxAngleFromFacing)
                             {
                                 if (hasController)
@@ -3086,11 +3091,11 @@ namespace TiltBrush
                     m_CurrentGazeObject = iControllerIndex;
                     m_CurrentGazeHitPoint = m_GazeResults[iControllerIndex].m_ControllerPosition;
 
-                    // TODO: This should not be hardcoded once multiple pointers are allowed.
+                    // TODO: This should not be hardcoded once multiple pointers are allowed. //TODO:一旦允许多个指针，就不应该硬编码。
                     m_GazeResults[m_CurrentGazeObject].m_ControllerName = InputManager.ControllerName.Brush;
                     if (m_GazeResults[m_CurrentGazeObject].m_HitWithGaze)
                     {
-                        //average with the gaze position if we hit that too
+                        //average with the gaze position if we hit that too //如果我们也这样做的话，平均的注视位置
                         m_CurrentGazeHitPoint += m_GazeResults[m_CurrentGazeObject].m_GazePosition;
                         m_CurrentGazeHitPoint *= 0.5f;
                     }
@@ -3152,7 +3157,7 @@ namespace TiltBrush
                 }
             }
 
-            //update our positioning timer
+            //update our positioning timer  //更新我们的定位计时器
             if (m_PositioningPanelWithHead)
             {
                 m_PositioningTimer += m_PositioningSpeed * Time.deltaTime;
@@ -3215,7 +3220,6 @@ namespace TiltBrush
         /// </summary>
         void UpdateActiveGazeObject()//当头盔看这头时，被执行
         {
-            Debug.Log("我是否被执行");
 
             BasePanel currentPanel = m_PanelManager.GetPanel(m_CurrentGazeObject);
             currentPanel.SetPositioningPercent(m_PositioningTimer);

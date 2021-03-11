@@ -198,7 +198,7 @@ namespace TiltBrush
             // If the pointer is in an invalid draw location this set this to false
             m_SurfaceIsDrawable = true;
 
-            // Standard math for computing pointer transform
+            // Standard math for computing pointer transform  //计算指针变换的标准数学
             Vector3 vTransformedOffset = transform.rotation * m_ReticleOffset;
             vPos = transform.position + vTransformedOffset;
             vForward = -transform.forward;

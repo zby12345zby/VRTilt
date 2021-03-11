@@ -1840,6 +1840,7 @@ namespace TiltBrush
         {
             // TODO: this feels like it should be an explicit part of Config,
             // not something based on VR hardware...
+            //TODO:这感觉应该是配置的显式部分，而不是基于VR硬件的东西。。。
             return App.VrSdk.GetControllerDof() != TiltBrush.VrSdk.DoF.None;
         }
 
