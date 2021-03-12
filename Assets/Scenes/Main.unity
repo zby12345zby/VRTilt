@@ -5995,18 +5995,6 @@ Transform:
   m_Father: {fileID: 2026420163}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &300601874 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114000010779486394, guid: dedd7823645ca60468aca5f2ff1b9a7f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1226230318}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d01da51044c98dc4cb264b9ddf243725, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &302687283
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8788,19 +8776,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46fe9e0b23166454c8cb73040321d78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
-  texture: {fileID: 2800000, guid: 3d15826ebe1cc7f4bbfbb655cce520f7, type: 3}
-  curved: 0
-  antialias: 0
-  highquality: 0
-  scale: 1
-  distance: 0
-  alpha: 1
-  uvOffset: {x: 0, y: 0, z: 1, w: 1}
-  mouseScale: {x: 1, y: 1}
-  curvedRange: {x: 1, y: 2}
-  inputMethod: 0
 --- !u!4 &622233201
 Transform:
   m_ObjectHideFlags: 0
@@ -9085,7 +9060,7 @@ MonoBehaviour:
   m_QualityLevels: {fileID: 11400000, guid: 268ad053764ab88479007fcc04e5cdcb, type: 2}
   m_MobileQualityLevels: {fileID: 11400000, guid: f5586851c6e53bd4294e7c2c7a75d40d,
     type: 2}
-  m_DebugText: {fileID: 436990583}
+  m_DebugText: {fileID: 0}
 --- !u!114 &652605548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14986,6 +14961,20 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 20000011692615516, guid: dedd7823645ca60468aca5f2ff1b9a7f,
+        type: 3}
+      propertyPath: m_HDR
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010779486394, guid: dedd7823645ca60468aca5f2ff1b9a7f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013132276250, guid: dedd7823645ca60468aca5f2ff1b9a7f, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011324248280, guid: dedd7823645ca60468aca5f2ff1b9a7f, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -18616,6 +18605,18 @@ Transform:
   m_Father: {fileID: 1043378877}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1536859794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114000010779486394, guid: dedd7823645ca60468aca5f2ff1b9a7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1226230318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d01da51044c98dc4cb264b9ddf243725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1539029383
 GameObject:
   m_ObjectHideFlags: 0
@@ -26791,7 +26792,7 @@ MonoBehaviour:
     type: 3}
   m_GrabWorldFadeSpeed: 8
   m_GrabWorldGridColor: {r: 0.30147058, g: 0.30147058, b: 0.30147058, a: 1}
-  m_ControllerGrabVisuals: {fileID: 300601874}
+  m_ControllerGrabVisuals: {fileID: 1536859794}
   m_WidgetGpuIntersectionRadius: 0.3
   m_NumStrokesForSaveIcon: 50
   m_TossThresholdMeters: 3

@@ -300,6 +300,7 @@ namespace TiltBrush
             }
             m_VrCamera.gameObject.SetActive(true);
             m_VrSystem.SetActive(m_VrCamera.gameObject.activeSelf);
+
         }
 
         void Start()

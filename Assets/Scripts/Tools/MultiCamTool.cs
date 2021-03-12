@@ -1040,7 +1040,7 @@ public class MultiCamTool : BaseTool {
             // Intentionally not smoothed here, since we're already playing back a smoothed path.
             newXform.ToTransform(xf);
 
-            // Also copy to the head transform, so we can see what's going on
+            // Also copy to the head transform, so we can see what's going on //同时复制到头部变换，这样我们就可以看到发生了什么
             newXform.ToTransform(App.VrSdk.GetVrCamera().transform);
           }
 
