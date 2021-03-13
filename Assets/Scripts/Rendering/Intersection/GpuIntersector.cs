@@ -381,7 +381,7 @@ namespace TiltBrush
 
                 // Only set the InputTexture, since the OutputBuffer never changes.
                 sm_ComputeCopyShader.SetTexture(sm_CopyKernel, "InputTexture", m_ResultTex);
-                sm_ComputeCopyShader.Dispatch(sm_CopyKernel, 4, 4, 1);
+                //sm_ComputeCopyShader.Dispatch(sm_CopyKernel, 4, 4, 1);
 
                 RenderTexture.ReleaseTemporary(m_ResultTex);
                 m_ResultTex = null;

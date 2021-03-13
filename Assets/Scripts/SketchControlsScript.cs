@@ -2980,7 +2980,7 @@ namespace TiltBrush
                             vToPanel.Normalize();
 
                             //如果头部（眼睛）正面凝视角度在一定范围内，为true
-                            if (!bRequireVisibilityCheck || Vector3.Angle(vToPanel, m_CurrentGazeRay.direction) < m_GazeMaxAngleFromFacing)
+                            if (true)//!bRequireVisibilityCheck || Vector3.Angle(vToPanel, m_CurrentGazeRay.direction) < m_GazeMaxAngleFromFacing)
                             {
                                 if (hasController)
                                 {

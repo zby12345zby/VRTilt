@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -870,7 +869,7 @@ namespace TiltBrush
             {
                 //zby加的
                 case SdkMode.ShadowMR:
-                    return DoF.None;
+                    return DoF.Six;
                 //
 
                 case SdkMode.Oculus:
